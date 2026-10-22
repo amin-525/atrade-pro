@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Trade Pro · تحلیل همه بازارها</title>
+<meta name="theme-color" content="#0a0f1d">
+<link rel="preconnect" href="https://cdn.jsdelivr.net"><link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+:root{--bg:#f3f5fa;--panel:rgba(255,255,255,.66);--line:#dde2ee;--tx:#141a2e;--mute:#62708f;--up:#0f9d8f;--dn:#e0394a;--gold:#c98a0a;--me:#e8ecfb;--bot:#f3f5fa;--g1:rgba(255,255,255,.78);--g2:rgba(255,255,255,.30);--e1:rgba(255,255,255,.95);--e2:rgba(255,255,255,.25);--e3:rgba(110,130,200,.45);--sh:rgba(40,55,110,.32);--hi:rgba(255,255,255,.7)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1322;--panel:rgba(21,29,51,.62);--line:#25304d;--tx:#e8ecf6;--mute:#8d9abb;--up:#2ec4b6;--dn:#ff5d6c;--gold:#f5b83d;--me:#27345c;--bot:#1c2540;--g1:rgba(255,255,255,.20);--g2:rgba(255,255,255,.05);--e1:rgba(255,255,255,.55);--e2:rgba(255,255,255,.08);--e3:rgba(139,156,255,.40);--sh:rgba(0,0,0,.55);--hi:rgba(255,255,255,.22)}}
+:root[data-theme="dark"]{--bg:#0d1322;--panel:rgba(21,29,51,.62);--line:#25304d;--tx:#e8ecf6;--mute:#8d9abb;--up:#2ec4b6;--dn:#ff5d6c;--gold:#f5b83d;--me:#27345c;--bot:#1c2540;--g1:rgba(255,255,255,.20);--g2:rgba(255,255,255,.05);--e1:rgba(255,255,255,.55);--e2:rgba(255,255,255,.08);--e3:rgba(139,156,255,.40);--sh:rgba(0,0,0,.55);--hi:rgba(255,255,255,.22)}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background-color:var(--bg);background-image:radial-gradient(620px 420px at 88% -6%,rgba(90,107,216,.30),transparent 62%),radial-gradient(520px 400px at 4% 104%,rgba(46,196,182,.24),transparent 62%),radial-gradient(420px 300px at 58% 52%,rgba(245,184,61,.13),transparent 66%);background-attachment:fixed;min-height:100vh;color:var(--tx);font-family:Vazirmatn,Tahoma,"Segoe UI",sans-serif;line-height:1.8}
+.wrap{max-width:1100px;margin:0 auto;padding:12px}
+header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+header h1{font-size:21px;margin:0;font-weight:800;direction:ltr}
+.sp{flex:1}
+.chip,.pill{font-size:12px;color:var(--mute);border:1px solid var(--line);border-radius:99px;padding:1px 10px;background:var(--g2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 var(--hi)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px;backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);box-shadow:inset 0 1px 0 var(--hi),0 10px 30px -14px var(--sh)}
+button{position:relative;overflow:hidden;isolation:isolate;font:inherit;font-size:13px;cursor:pointer;color:var(--tx);border:1px solid transparent;border-radius:13px;padding:6px 15px;
+ background:linear-gradient(150deg,var(--g1),var(--g2)) padding-box,linear-gradient(150deg,var(--e1),var(--e2) 48%,var(--e3)) border-box;
+ backdrop-filter:blur(16px) saturate(170%);-webkit-backdrop-filter:blur(16px) saturate(170%);
+ box-shadow:inset 0 1px 0 var(--hi),inset 0 -1px 0 rgba(0,0,0,.14),inset 0 0 14px rgba(255,255,255,.07),0 8px 18px -8px var(--sh),0 1px 2px rgba(0,0,0,.18);
+ text-shadow:0 1px 0 rgba(255,255,255,.18);transition:transform .15s,box-shadow .2s,filter .2s}
+button::before{content:"";position:absolute;inset:0 0 52% 0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,.02));z-index:-1;pointer-events:none}
+button::after{content:"";position:absolute;top:-10%;bottom:-10%;width:36%;left:-70%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-22deg);transition:left .65s ease;z-index:-1;pointer-events:none}
+button:hover{transform:translateY(-1.5px);filter:brightness(1.06);box-shadow:inset 0 1px 0 var(--hi),inset 0 -1px 0 rgba(0,0,0,.14),inset 0 0 18px rgba(255,255,255,.12),0 12px 22px -8px var(--sh),0 0 0 3px rgba(245,184,61,.16)}
+button:hover::after{left:135%}
+button:active{transform:translateY(0) scale(.97);box-shadow:inset 0 2px 6px rgba(0,0,0,.28),inset 0 1px 0 var(--hi),0 2px 6px -3px var(--sh)}
+button.on{color:var(--gold);background:linear-gradient(150deg,rgba(245,184,61,.34),rgba(245,184,61,.10)) padding-box,linear-gradient(150deg,rgba(255,224,150,.95),rgba(245,184,61,.35) 50%,rgba(201,138,10,.7)) border-box;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 0 0 3px rgba(245,184,61,.18),0 8px 18px -8px rgba(201,138,10,.6)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+button.go{color:#2a1c00;font-weight:600;text-shadow:0 1px 0 rgba(255,255,255,.35);background:linear-gradient(150deg,rgba(255,214,120,.95),rgba(236,168,36,.66)) padding-box,linear-gradient(150deg,rgba(255,244,210,1),rgba(255,214,120,.4) 50%,rgba(190,125,10,.8)) border-box;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -2px 6px rgba(160,100,0,.25),0 10px 20px -8px rgba(201,138,10,.65)}
+button.warn{color:var(--dn);background:linear-gradient(150deg,rgba(255,93,108,.30),rgba(255,93,108,.08)) padding-box,linear-gradient(150deg,rgba(255,190,196,.9),rgba(255,93,108,.3) 50%,rgba(224,57,74,.65)) border-box}
+button.warn:hover{box-shadow:inset 0 1px 0 var(--hi),0 0 0 3px rgba(255,93,108,.2),0 12px 22px -8px rgba(224,57,74,.5)}
+button svg{vertical-align:-2px;margin-inline-end:4px}
+.bar{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+#view{position:relative;border:1.5px dashed var(--line);border-radius:12px;min-height:200px;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center;color:var(--mute);font-size:13.5px;padding:10px;transition:border-color .2s}
+#view.drag{border-color:var(--gold)}
+#pv{width:100%;border-radius:8px;touch-action:none}
+input,select{font:inherit;font-size:14px;background:var(--g2);box-shadow:inset 0 1px 3px rgba(0,0,0,.15),inset 0 1px 0 var(--hi);backdrop-filter:blur(8px);color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:5px 10px;width:100%}
+select option{background:Canvas;color:CanvasText}
+label{display:block;font-size:12px;color:var(--mute);margin-top:4px}
+details{margin-top:10px;font-size:13px}summary{cursor:pointer;color:var(--mute)}
+.set{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.chat{display:flex;flex-direction:column;height:560px}
+@media(max-width:820px){.chat{height:520px}}
+#msgs{flex:1;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:2px 2px 8px}
+.m{max-width:92%;padding:8px 12px;border-radius:14px;font-size:14px;animation:in .2s ease}
+.m.bot{background:var(--bot);align-self:flex-start;border-top-right-radius:4px}
+.m.me{background:var(--me);align-self:flex-end;border-top-left-radius:4px}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.m p{margin:4px 0}.m ul,.m ol{margin:4px 0;padding-inline-start:20px}
+.dots i{display:inline-block;width:6px;height:6px;margin:0 2px;border-radius:50%;background:var(--mute);animation:b 1s infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes b{0%,60%,100%{opacity:.25}30%{opacity:1}}
+#chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+#chips button{border-radius:99px;font-size:12.5px}
+form{display:flex;gap:6px}
+.vd{border:2px solid var(--line);border-radius:12px;padding:6px 12px;margin-bottom:6px}
+.vd b{font-size:19px}.vd span{font-size:12px;margin-inline-start:6px}
+.BUY{border-color:var(--up);color:var(--up)}.SELL{border-color:var(--dn);color:var(--dn)}.WAIT{color:var(--mute)}
+.lv{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;direction:ltr;text-align:center;margin:6px 0}
+.lv div{border:1px solid var(--line);border-radius:8px;padding:3px;font-size:12px;color:var(--tx)}
+.lv span{display:block;color:var(--mute);font-size:11px}.lv b{font-size:14px}
+.up{color:var(--up)}.dn{color:var(--dn)}
+small{display:block;margin-top:8px;font-size:11.5px;color:var(--mute)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}button::after{display:none}}
+button.rec{color:#fff;border-color:rgba(255,150,160,.95);background:linear-gradient(145deg,rgba(255,93,108,.92),rgba(224,57,74,.62));animation:rec 1.3s infinite}
+@keyframes rec{0%{box-shadow:0 0 0 0 rgba(255,93,108,.55)}100%{box-shadow:0 0 0 14px rgba(255,93,108,0)}}
+.set input::placeholder{color:var(--mute);opacity:.7}
+
+/* --- clean settings --- */
+details.cfgbox{margin-top:12px;border:1px solid var(--glb,var(--line));border-radius:16px;background:var(--g2,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);overflow:hidden}
+details.cfgbox>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;cursor:pointer;font-weight:600;font-size:13.5px;color:var(--tx)}
+details.cfgbox>summary::-webkit-details-marker{display:none}
+details.cfgbox>summary::after{content:"";width:8px;height:8px;border:solid var(--mute);border-width:0 2px 2px 0;transform:rotate(45deg);margin-inline-start:2px;flex:none;transition:transform .25s}
+details.cfgbox[open]>summary::after{transform:rotate(-135deg)}
+.sumt{white-space:nowrap}.sumv{flex:1;min-width:0;text-align:end;font-weight:400;font-size:12px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cfg{padding:0 14px 14px;border-top:1px solid var(--line)}
+.cfg h4{margin:14px 0 8px;font-size:12px;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:8px}
+.cfg h4::after{content:"";flex:1;height:1px;background:var(--line)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fld{display:flex;flex-direction:column;justify-content:flex-end;gap:5px;min-width:0;margin:0}
+.fld span{font-size:12px;line-height:1.45;color:var(--mute)}
+.cfg input,.cfg select{width:100%;min-width:0;height:42px;padding:0 12px;font-size:15px;border-radius:12px;border:1px solid var(--line);background:rgba(127,140,180,.10);color:var(--tx);box-shadow:inset 0 1px 2px rgba(0,0,0,.12);transition:border-color .15s,background .15s}
+.cfg input:hover,.cfg select:hover{border-color:var(--gold)}
+.cfg input::placeholder{color:var(--mute);opacity:.65}
+.cfg input[type=number]{-moz-appearance:textfield;appearance:textfield}
+.cfg input::-webkit-inner-spin-button,.cfg input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.cfg select{-webkit-appearance:none;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238d9abb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 12px center;padding-inline-start:30px}
+.cfg select option{background:var(--panel);color:var(--tx)}
+.hint{grid-column:span 1;margin:0;align-self:end;font-size:11.5px;line-height:1.6;color:var(--mute)}
+@media(max-width:380px){.grid2{grid-template-columns:minmax(0,1fr)}.hint{grid-column:auto}}
+/* --- header / buttons on small screens --- */
+header{flex-wrap:wrap}
+header h1,.chip,#newchat{white-space:nowrap}
+@media(max-width:560px){header h1{font-size:19px}.chip{font-size:11px;padding:1px 8px}.bar>button{flex:1 1 calc(50% - 6px)}}
+.pro{border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin:6px 0;background:var(--g2)}
+.pro h5{margin:2px 0 6px;font-size:13px;color:var(--gold)}
+.ind{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;direction:ltr;font-size:11.5px;text-align:center}
+.ind div{border:1px solid var(--line);border-radius:6px;padding:2px}
+.disc{border-inline-start:3px solid var(--gold);padding-inline-start:8px}
+/* ---- pro dark dashboard theme ---- */
+:root[data-theme="dark"]{--bg:#0a0f1d;--panel:rgba(18,25,45,.72);--line:#232e4d;--tx:#e9eefb;--mute:#8a97b8;--up:#22d3a6;--dn:#ff4d6a;--gold:#f6b93b;--me:#26355f;--bot:#141c33}
+body{font-family:Vazirmatn,Tahoma,sans-serif;background-image:radial-gradient(700px 480px at 90% -10%,rgba(91,108,255,.22),transparent 60%),radial-gradient(600px 420px at 0% 110%,rgba(34,211,166,.16),transparent 60%)}
+.box{border-radius:20px;border-color:rgba(120,140,220,.18)}
+header h1{background:linear-gradient(90deg,#8ea2ff,#22d3a6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mkts{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}
+.mkts button{border-radius:99px;font-size:12.5px;white-space:nowrap;padding:5px 13px}
+.vd{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.vd.BUY{background:linear-gradient(135deg,rgba(34,211,166,.18),rgba(34,211,166,.03))}
+.vd.SELL{background:linear-gradient(135deg,rgba(255,77,106,.18),rgba(255,77,106,.03))}
+.vd.WAIT{background:linear-gradient(135deg,rgba(138,151,184,.14),transparent);border-color:var(--line)}
+.pro{background:linear-gradient(160deg,rgba(91,108,255,.08),rgba(18,25,45,.4));border-color:rgba(120,140,220,.22)}
+.lv div{background:rgba(255,255,255,.03)}
+.mini{width:100%;height:auto;display:block;margin:6px 0;border-radius:10px;background:rgba(0,0,0,.18)}
+.gauge{height:8px;border-radius:99px;background:linear-gradient(90deg,var(--dn),#8a97b8 50%,var(--up));position:relative;margin:6px 0 2px}
+.gauge i{position:absolute;top:-4px;width:4px;height:16px;border-radius:2px;background:#fff;box-shadow:0 0 6px #fff}
+.m{max-width:96%}
+@media(max-width:560px){.lv{grid-template-columns:repeat(2,1fr)}.ind{grid-template-columns:repeat(3,1fr)}.wrap{padding:8px}.chat{height:70vh}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <svg width="40" height="40" viewBox="0 0 48 48" role="img" aria-label="A Trade">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5a6bd8"/><stop offset="1" stop-color="#2ec4b6"/></linearGradient></defs>
+    <rect width="48" height="48" rx="12" fill="url(#g)"/>
+    <path d="M11 37 L24 10 L37 37" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="16.5" y="27" width="5" height="4" fill="#ff5d6c"/><rect x="26.5" y="24" width="5" height="5" fill="#f5b83d"/>
+  </svg>
+  <h1>A Trade</h1><span class="chip">تحلیل حرفه‌ای همه بازارها</span><span class="sp"></span>
+  <button id="newchat" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>گفتگوی جدید</button>
+</header>
+
+<nav class="mkts" aria-label="بازار">
+  <button type="button" data-ac="crypto">₿ کریپتو</button><button type="button" data-ac="gold">🥇 طلا</button><button type="button" data-ac="forex">💱 فارکس</button><button type="button" data-ac="stock">📈 سهام</button><button type="button" data-ac="index">📊 شاخص</button><button type="button" data-ac="commodity">🛢️ کالا/نفت</button><button type="button" data-ac="iran">🇮🇷 بورس ایران</button>
+</nav>
+<main class="grid">
+<section class="box">
+  <div id="view"><span id="ph">اسکرین‌شات نمودار را اینجا بکشید یا Paste کنید (Ctrl+V)<br>یا از دکمه‌های پایین استفاده کنید.</span><canvas id="pv" hidden></canvas></div>
+  <div class="bar">
+    <button id="share" class="go" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>اشتراک صفحه</button>
+    <button id="file" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>انتخاب اسکرین‌شات</button>
+    <button id="mSel" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v13a2 2 0 0 0 2 2h13M3 6h13a2 2 0 0 1 2 2v13"/></svg>انتخاب ناحیه</button>
+    <button id="mCal" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg>کالیبره قیمت</button>
+    <button id="stop" class="warn" type="button" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>قطع اشتراک</button>
+    <button id="clear" class="warn" type="button" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14h10l1-14"/><path d="M10 10v6M14 10v6"/></svg>پاک کردن اسکرین‌شات</button>
+    <input id="pick" type="file" accept="image/*" hidden>
+  </div>
+  <details class="cfgbox">
+    <summary><span class="sumt">تنظیمات حساب و ضرر</span><span id="cfgSum" class="sumv"></span></summary>
+    <div class="cfg">
+      <h4>حساب</h4>
+      <div class="grid2">
+        <label class="fld"><span>موجودی</span><input id="bal" type="number" min="1" step="any" inputmode="decimal"></label>
+        <label class="fld"><span>بازار</span><select id="mk"><option value="spot">اسپات (فقط خرید)</option><option value="fut">فیوچرز</option></select></label>
+      </div>
+      <h4>بازار و نماد (همه بازارها)</h4>
+      <div class="grid2">
+        <label class="fld"><span>نوع بازار</span><select id="ac"><option value="crypto">ارز دیجیتال</option><option value="gold">طلا و فلزات</option><option value="forex">فارکس</option><option value="stock">سهام</option><option value="index">شاخص</option><option value="commodity">کالا / نفت</option><option value="iran">بورس ایران</option></select></label>
+        <label class="fld"><span>نماد</span><input id="sym" type="text" placeholder="مثلاً BTCUSDT، XAUUSD، EURUSD، AAPL"></label>
+        <label class="fld"><span>تایم‌فریم نمودار</span><select id="tf"><option>1m</option><option>5m</option><option>15m</option><option selected>1h</option><option>4h</option><option>1D</option><option>1W</option></select></label>
+      </div>
+      <h4>تحلیل پیشرفته با Claude (اختیاری)</h4>
+      <div class="grid2">
+        <label class="fld"><span>کلید API انتروپیک (فقط روی همین مرورگر ذخیره می‌شود)</span><input id="akey" type="password" placeholder="sk-ant-... (خالی = فقط موتور داخلی)"></label>
+        <label class="fld"><span>مدل</span><input id="amodel" type="text"></label>
+      </div>
+      <h4>ضرر و سود</h4>
+      <div class="grid2">
+        <label class="fld"><span>ریسک هر معامله (٪)</span><input id="risk" type="number" min="0.1" max="25" step="0.1" inputmode="decimal"></label>
+        <label class="fld"><span>سود هدف (برابر ضرر)</span><input id="rr" type="number" min="1" max="10" step="0.5" inputmode="decimal"></label>
+        <label class="fld"><span>بیشترین ضرر (مبلغ)</span><input id="maxLoss" type="number" min="0" step="any" inputmode="decimal" placeholder="خودکار"></label>
+        <label class="fld"><span>فاصله حد ضرر (٪ قیمت)</span><input id="slPct" type="number" min="0" max="20" step="any" inputmode="decimal" placeholder="خودکار"></label>
+      </div>
+      <h4>سرعت</h4>
+      <div class="grid2">
+        <label class="fld"><span>تحلیل خودکار (ثانیه)</span><input id="every" type="number" min="3" max="300" step="1" inputmode="numeric"></label>
+        <p class="hint">«خودکار» یعنی از نوسان نمودار حساب می‌شود. اگر «بیشترین ضرر» را پر کنید، جای درصد ریسک را می‌گیرد.</p>
+      </div>
+    </div>
+  </details>
+  <small class="disc"><b>پیش‌بینی‌ها احتمالاتی‌اند، نه قطعی.</b> هیچ تحلیلی (چه انسان چه هوش مصنوعی) آینده بازار را تضمین نمی‌کند. این ابزار توصیه مالی نیست و سود را تضمین نمی‌کند. قبل از پول واقعی روی حساب دمو امتحان کنید و حد ضرر را همیشه ثبت کنید.</small>
+</section>
+
+<section class="box chat" aria-label="گفتگو">
+  <div id="msgs" role="log" aria-live="polite"></div>
+  <div id="chips"></div>
+  <form id="f" autocomplete="off"><input id="q" placeholder="سؤال بپرسید یا دستور بدهید…" aria-label="پیام"><button id="mic" type="button" aria-label="کنترل با صدا" aria-pressed="false" title="کنترل با صدا"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><path d="M19 11a7 7 0 0 1-14 0M12 18v3"/></svg></button><button id="spk" type="button" aria-label="پاسخ صوتی" aria-pressed="false" title="پاسخ صوتی"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a9 9 0 0 1 0 12"/></svg></button><button class="go" type="submit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>ارسال</button></form>
+</section>
+</main>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=(n,d=2)=>Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const norm=t=>String(t).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/\u200c/g,' ').replace(/(\d)[,٬](\d)/g,'$1$2').toLowerCase().trim();
+const num=t=>{const m=norm(t).match(/-?\d+(?:\.\d+)?/);return m?parseFloat(m[0]):null};
+let S={bal:1000,risk:1,mk:'spot',slPct:null,atrMul:1.5,rr:2,maxLoss:null,voiceOut:false,every:10,ac:'crypto',sym:'',tf:'1h',akey:'',amodel:'claude-sonnet-4-5'};
+try{Object.assign(S,JSON.parse(localStorage.getItem('atc')||'{}'))}catch(e){}
+const saveS=()=>{try{localStorage.setItem('atc',JSON.stringify(S))}catch(e){}};
+['bal','risk','mk'].forEach(k=>{const el=$('#'+k);el.value=S[k];el.onchange=()=>{S[k]=k==='mk'?el.value:Math.max(0.1,+el.value||S[k]);saveS()}});
+
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+function syncIn(){$('#bal').value=S.bal;$('#risk').value=S.risk;$('#mk').value=S.mk;$('#maxLoss').value=S.maxLoss||'';$('#slPct').value=S.slPct||'';$('#rr').value=S.rr;$('#every').value=S.every;sumCfg()}
+function sumCfg(){const e=$('#cfgSum');if(e)e.textContent=fmt(S.bal,0)+' · '+(S.maxLoss?'ضرر '+fmt(S.maxLoss)+' ثابت':'ریسک '+S.risk+'٪')+' · '+(S.mk==='spot'?'اسپات':'فیوچرز')}
+function restartAuto(){if(video){clearInterval(timer);timer=setInterval(()=>analyze(false),S.every*1000)}}
+$('#maxLoss').onchange=e=>{const v=+e.target.value;S.maxLoss=v>0?Math.min(v,+(S.bal*.25).toFixed(2)):null;syncIn();saveS()};
+$('#slPct').onchange=e=>{const v=+e.target.value;S.slPct=v>0?clamp(v,.1,20):null;syncIn();saveS()};
+$('#rr').onchange=e=>{S.rr=clamp(+e.target.value||2,1,10);syncIn();saveS()};
+$('#risk').addEventListener('change',()=>{S.maxLoss=null;syncIn();saveS()});
+['bal','risk','mk','maxLoss','slPct','rr'].forEach(id=>$('#'+id).addEventListener('change',()=>{if(LV&&srcSize()){lastSig='';setTimeout(()=>analyze(true),200)}}));
+$('#every').onchange=e=>{S.every=clamp(Math.round(+e.target.value)||10,3,300);syncIn();saveS();restartAuto()};
+['bal','risk','mk','maxLoss','slPct','rr'].forEach(id=>$('#'+id).addEventListener('change',sumCfg));
+['ac','sym','tf','akey','amodel'].forEach(k=>{const el=$('#'+k);el.value=S[k]||'';el.onchange=()=>{S[k]=el.value.trim();saveS();if(LV&&srcSize()){lastSig='';setTimeout(()=>analyze(true),200)}}});
+function mkUI(){document.querySelectorAll('.mkts button').forEach(b=>b.classList.toggle('on',b.dataset.ac===S.ac));$('#ac').value=S.ac}
+document.querySelectorAll('.mkts button').forEach(b=>b.onclick=()=>{S.ac=b.dataset.ac;saveS();mkUI();if(LV&&srcSize()){lastSig='';analyze(true)}else bot('بازار روی «'+b.textContent.trim()+'» تنظیم شد. نمودار را بدهید.')});
+$('#ac').addEventListener('change',mkUI);mkUI();
+syncIn();
+/* ---------- chat plumbing ---------- */
+const msgs=$('#msgs');let queue=Promise.resolve();
+function say(html,who){const d=document.createElement('div');d.className='m '+who;d.innerHTML=html;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d}
+function setChips(a){const c=$('#chips');c.innerHTML='';(a||[]).forEach(t=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.onclick=()=>handle(t);c.appendChild(b)})}
+function bot(html,chips){queue=queue.then(()=>new Promise(r=>{const d=say('<span class="dots"><i></i><i></i><i></i></span>','bot');setTimeout(()=>{d.innerHTML=html;msgs.scrollTop=msgs.scrollHeight;setChips(chips);speak(html);r()},300+Math.min(500,html.length))}))}
+$('#f').onsubmit=e=>{e.preventDefault();const v=$('#q').value.trim();if(v){$('#q').value='';handle(v)}};
+$('#newchat').onclick=()=>{msgs.innerHTML='';LV=null;welcome()};
+
+/* ---------- image sources ---------- */
+let video=null,still=null,stream=null,timer=null,busy=false,mode='',sel=null,cal=[],pend=null,awaitPrice=false,last=null,drag=null,LV=null,lastSig='';
+const pv=$('#pv'),pc=pv.getContext('2d');
+const srcSize=()=>video&&video.videoWidth?[video.videoWidth,video.videoHeight]:still?[still.naturalWidth,still.naturalHeight]:null;
+function gotSource(kind){$('#ph').hidden=true;pv.hidden=false;$('#clear').hidden=false;bot(kind==='video'?'اشتراک صفحه شروع شد. دارم نمودار را می‌خوانم…':'تصویر را گرفتم. دارم کندل‌ها را می‌خوانم…');setTimeout(()=>analyze(true),kind==='video'?1200:300)}
+function useImage(file){if(!file||!file.type.startsWith('image/'))return;const img=new Image();img.onload=()=>{still=img;stopStream(true);gotSource('img')};img.onerror=()=>bot('این فایل تصویر نبود. یک اسکرین‌شات (PNG یا JPG) بدهید.');img.src=URL.createObjectURL(file)}
+function stopStream(keep){clearInterval(timer);if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}if(!keep&&video){video=null}else if(keep)video=null;$('#stop').hidden=true}
+$('#share').onclick=async()=>{
+  if(!(navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia)){bot('این دستگاه اشتراک صفحه ندارد (مثل بیشتر گوشی‌ها). اسکرین‌شات بگیرید و اینجا Paste کنید یا «انتخاب اسکرین‌شات» را بزنید.');return}
+  try{stream=await navigator.mediaDevices.getDisplayMedia({video:true,audio:false});video=document.createElement('video');video.srcObject=stream;video.muted=true;video.playsInline=true;await video.play();still=null;$('#stop').hidden=false;
+    stream.getVideoTracks()[0].onended=()=>{stopStream();bot('اشتراک صفحه تمام شد.')};gotSource('video');restartAuto()}
+  catch(e){bot('اشتراک صفحه شروع نشد (شاید لغو کردید یا مرورگر اجازه نداد). مشکلی نیست؛ اسکرین‌شات را اینجا Paste کنید یا بکشید و رها کنید.')}
+};
+$('#stop').onclick=()=>{stopStream();bot('اشتراک صفحه قطع شد.')};
+function clearShot(quiet){clearInterval(timer);stopStream();still=null;video=null;sel=null;cal=[];pend=null;awaitPrice=false;last=null;LV=null;lastSig='';mode='';
+  $('#mSel').classList.remove('on');$('#mCal').classList.remove('on');pv.hidden=true;pv.width=1;$('#ph').hidden=false;$('#clear').hidden=true;$('#pick').value='';
+  if(!quiet)bot('اسکرین‌شات و همه خط‌ها پاک شد. هر وقت خواستید تصویر تازه‌ای بدهید.',['راهنما'])}
+$('#clear').onclick=()=>clearShot();
+$('#file').onclick=()=>$('#pick').click();$('#pick').onchange=e=>useImage(e.target.files[0]);
+addEventListener('paste',e=>{const it=[...(e.clipboardData?.items||[])].find(i=>i.type.startsWith('image/'));if(it){e.preventDefault();useImage(it.getAsFile())}});
+addEventListener('dragover',e=>{e.preventDefault();$('#view').classList.add('drag')});addEventListener('dragleave',()=>$('#view').classList.remove('drag'));
+addEventListener('drop',e=>{e.preventDefault();$('#view').classList.remove('drag');useImage(e.dataTransfer.files[0])});
+
+/* ---------- preview canvas, region, calibration ---------- */
+function drawPv(){const z=srcSize();if(!z||!z[0])return;const W=pv.clientWidth,H=Math.round(W*z[1]/z[0]);if(pv.width!==W||pv.height!==H){pv.width=W;pv.height=H}
+  pc.drawImage(video||still,0,0,W,H);pc.lineWidth=2;pc.font='12px sans-serif';
+  if(sel){pc.strokeStyle='#f5b83d';pc.setLineDash([6,4]);pc.strokeRect(sel.x*W,sel.y*H,sel.w*W,sel.h*H);pc.setLineDash([])}
+  [...cal,...(pend!=null?[{yr:pend,p:'?'}]:[])].forEach(c=>{pc.strokeStyle=pc.fillStyle='#8b9cff';pc.beginPath();pc.moveTo(0,c.yr*H);pc.lineTo(W,c.yr*H);pc.stroke();pc.fillText(c.p,4,c.yr*H-3)});
+  if(last){const x0=(sel?sel.x:0)*W,x1=sel?(sel.x+sel.w)*W:W;[[last.e,'#ffffff','ورود'],[last.s,'#ff5d6c','SL'],[last.t,'#2ec4b6','TP']].forEach(([y,c,l])=>{pc.strokeStyle=pc.fillStyle=c;pc.beginPath();pc.moveTo(x0,y*H);pc.lineTo(x1,y*H);pc.stroke();pc.fillText(l,x0+4,y*H-3)})}}
+(function frame(){drawPv();requestAnimationFrame(frame)})();
+const rel=e=>{const r=pv.getBoundingClientRect();return{x:Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)),y:Math.min(1,Math.max(0,(e.clientY-r.top)/r.height))}};
+function setMode(m){mode=mode===m?'':m;$('#mSel').classList.toggle('on',mode==='sel');$('#mCal').classList.toggle('on',mode==='cal');
+  if(mode==='sel')bot('روی عکس بکشید و فقط ناحیه کندل‌ها را مشخص کنید (بدون حجم و اندیکاتور).');
+  if(mode==='cal')bot('روی دو عدد محور قیمت کلیک کنید، یکی بالا و یکی پایین. بعد از هر کلیک قیمت همان نقطه را برایم بنویسید.')}
+$('#mSel').onclick=()=>setMode('sel');$('#mCal').onclick=()=>setMode('cal');
+pv.onpointerdown=e=>{if(!srcSize())return;const p=rel(e);
+  if(mode==='sel'){drag=p;sel={x:p.x,y:p.y,w:0,h:0};pv.setPointerCapture(e.pointerId)}
+  else if(mode==='cal'){pend=p.y;awaitPrice=true;bot('قیمت این نقطه چند است؟ فقط عدد را بنویسید.');$('#q').focus()}};
+pv.onpointermove=e=>{if(drag){const p=rel(e);sel={x:Math.min(drag.x,p.x),y:Math.min(drag.y,p.y),w:Math.abs(p.x-drag.x),h:Math.abs(p.y-drag.y)}}};
+pv.onpointerup=()=>{if(!drag)return;drag=null;if(sel.w<.05||sel.h<.05){sel=null;return}mode='';$('#mSel').classList.remove('on');bot('ناحیه ثبت شد. دوباره تحلیل می‌کنم…');setTimeout(()=>analyze(true),300)};
+
+/* ---------- vision engine ---------- */
+function grab(){const z=srcSize(),k=Math.min(1,1600/z[0]),c=document.createElement('canvas');c.width=Math.round(z[0]*k);c.height=Math.round(z[1]*k);c.getContext('2d').drawImage(video||still,0,0,c.width,c.height);return c}
+function detect(c){
+  const s=sel||{x:0,y:0,w:1,h:1},X0=Math.floor(s.x*c.width),Y0=Math.floor(s.y*c.height),Wd=Math.max(1,Math.floor(s.w*c.width)),Ht=Math.max(1,Math.floor(s.h*c.height));
+  const d=c.getContext('2d').getImageData(X0,Y0,Wd,Ht).data,cls=new Uint8Array(Wd*Ht);
+  for(let i=0,p=0;i<d.length;i+=4,p++){const r=d[i],g=d[i+1],b=d[i+2];
+    if(g>r*1.4&&g>=b&&g>90&&r<g*.7&&b<g*.96)cls[p]=1;else if(r>g*2&&r>b*1.5&&r>110)cls[p]=2}
+  const r0=new Uint32Array(Ht);for(let y=0;y<Ht;y++){let n=0;for(let x=0;x<Wd;x++)if(cls[y*Wd+x])n++;r0[y]=n}
+  for(let y=0;y<Ht;y++)if(r0[y]>.3*Wd&&(y<2||r0[y-2]<r0[y]*.5)&&(y>Ht-3||r0[y+2]<r0[y]*.5))for(let k=Math.max(0,y-1);k<=Math.min(Ht-1,y+1);k++)for(let x=0;x<Wd;x++)cls[k*Wd+x]=0;
+  const rn=new Uint32Array(Ht);for(let y=0;y<Ht;y++){let n=0;for(let x=0;x<Wd;x++)if(cls[y*Wd+x])n++;rn[y]=n}
+  const gap=Math.max(8,Math.round(Ht*.03)),segs=[];let a=-1,b=-1,m=0,em=0;
+  for(let y=0;y<Ht;y++){if(rn[y]>0){if(a<0)a=y;b=y;m+=rn[y];em=0}else if(a>=0&&++em>gap){segs.push({a,b,m});a=-1;m=0;em=0}}
+  if(a>=0)segs.push({a,b,m});
+  if(segs.length>1){const mx=Math.max(...segs.map(q=>q.m)),pk=segs.find(q=>q.m>=mx*.3);for(let y=0;y<Ht;y++)if(y<pk.a||y>pk.b)for(let x=0;x<Wd;x++)cls[y*Wd+x]=0}
+  const col=new Uint8Array(Wd);
+  for(let x=0;x<Wd;x++){let g=0,r=0;for(let y=0;y<Ht;y++){const v=cls[y*Wd+x];if(v===1)g++;else if(v===2)r++}col[x]=g===0&&r===0?0:(g>=r?1:2)}
+  let runs=[];for(let x=0;x<Wd;){if(!col[x]){x++;continue}const st=x,k=col[x];while(x<Wd&&col[x]===k)x++;runs.push({s:st,e:x,k})}
+  const ws=runs.map(r=>r.e-r.s).filter(w=>w>=3).sort((p,q)=>p-q),w0=ws.length?ws[ws.length>>1]:0,C=[];
+  if(w0>=3)runs=runs.filter(r=>r.e-r.s<=w0*5);
+  const meas=(a,b,k)=>{const wd=b-a;let top=-1,bot=-1,bt=-1,bb=-1;
+    for(let y=0;y<Ht;y++){let n=0;for(let x=a;x<b;x++)if(cls[y*Wd+x]===k)n++;
+      if(n>0){if(top<0)top=y;bot=y}if(wd>=3&&n>=Math.max(2,wd*.5)){if(bt<0)bt=y;bb=y}}
+    if(top<0)return null;if(bt<0){bt=top;bb=bot}
+    const up=k===1,hi=Ht-top,lo=Ht-bot,bT=Ht-bt,bB=Ht-bb;return{o:up?bB:bT,c:up?bT:bB,h:hi,l:lo,ext:bot-top+1}};
+  for(const r of runs){const w=r.e-r.s;let parts=[[r.s,r.e]];
+    if(w>=12){const wh=meas(r.s,r.e,r.k);if(!wh||wh.ext<w*.8)continue}
+    if(w0>=3&&w>w0*1.7){const n=Math.round(w/w0);parts=[];for(let i=0;i<n;i++)parts.push([r.s+Math.round(i*w/n),r.s+Math.round((i+1)*w/n)])}
+    for(const [p,q] of parts){const mm=meas(p,q,r.k);if(mm)C.push(mm)}}
+  return{C,Y0,Ht,w0,g:runs.filter(r=>r.k===1).length,r:runs.filter(r=>r.k===2).length};
+}
+function ema(C,n){const k=2/(n+1);let e=C[0].c;return C.map(x=>e=x.c*k+e*(1-k))}
+function rsiF(C,n){let g=0,l=0;for(let i=C.length-n;i<C.length;i++){const d=C[i].c-C[i-1].c;d>0?g+=d:l-=d}return l===0?100:100-100/(1+g/l)}
+function atrF(C,n){let s=0;for(let i=C.length-n;i<C.length;i++)s+=Math.max(C[i].h-C[i].l,Math.abs(C[i].h-C[i-1].c),Math.abs(C[i].l-C[i-1].c));return s/n}
+function engine(c){
+  const D=detect(c),C=D.C,n=C.length;
+  if(n<8)return{ok:false,n,msg:'فقط '+n+' کندل دیدم. نمودار را زوم کنید تا کندل‌ها بزرگ‌تر شوند، یا با «انتخاب ناحیه» فقط قسمت کندل‌ها را مشخص کنید. کندل‌ها باید سبز و قرمز باشند.'};
+  if(!D.g||!D.r)return{ok:false,n,msg:'فقط یک رنگ کندل پیدا کردم. فعلاً فقط نمودارهای سبز و قرمز را می‌خوانم.'};
+  const e1=ema(C,Math.max(4,Math.round(n*.2))),e2=ema(C,Math.max(8,Math.round(n*.5))),a=C[n-1],b=C[n-2],cc=C[n-3]||b,px=a.c,m=Math.max(3,Math.min(14,n-1)),R=rsiF(C,m),A=atrF(C,m);
+  const body=x=>Math.abs(x.c-x.o),rng=x=>x.h-x.l||1e-9,upw=x=>x.h-Math.max(x.o,x.c),low=x=>Math.min(x.o,x.c)-x.l,bull=x=>x.c>x.o,bear=x=>x.c<x.o;
+  let s=0;const why=[],tU=e1[n-1]>e2[n-1]&&px>e2[n-1],tD=e1[n-1]<e2[n-1]&&px<e2[n-1];
+  if(tU){s+=1;why.push('روند صعودی است.')}else if(tD){s-=1;why.push('روند نزولی است.')}else why.push('روند مشخص نیست (بازار رنج).');
+  if(R<32){s+=1;why.push('قیمت زیاد افت کرده و ممکن است برگردد (RSI پایین).')}
+  if(R>68){s-=1;why.push('قیمت زیاد بالا رفته و ممکن است برگردد (RSI بالا).')}
+  if(low(a)>=2*body(a)&&upw(a)<=body(a)*.6&&body(a)>0){s+=2;why.push('کندل چکش: خریدارها از پایین جلوی افت را گرفتند.')}
+  if(upw(a)>=2*body(a)&&low(a)<=body(a)*.6&&body(a)>0){s-=2;why.push('کندل ستاره ثاقب: فروشنده‌ها از بالا فشار آوردند.')}
+  if(bear(b)&&bull(a)&&a.c>=b.o&&a.o<=b.c&&body(a)>body(b)){s+=2;why.push('کندل سبز بزرگ، کندل قرمز قبلی را پوشاند (پوشای صعودی).')}
+  if(bull(b)&&bear(a)&&a.o>=b.c&&a.c<=b.o&&body(a)>body(b)){s-=2;why.push('کندل قرمز بزرگ، کندل سبز قبلی را پوشاند (پوشای نزولی).')}
+  if(bear(cc)&&body(b)<rng(b)*.3&&bull(a)&&a.c>(cc.o+cc.c)/2){s+=2;why.push('الگوی ستاره صبحگاهی (احتمال صعود).')}
+  if(bull(cc)&&body(b)<rng(b)*.3&&bear(a)&&a.c<(cc.o+cc.c)/2){s-=2;why.push('الگوی ستاره شامگاهی (احتمال نزول).')}
+  let side='WAIT';if(s>=4&&tU)side='BUY';else if(s<=-4&&tD)side='SELL';else if(Math.abs(s)>=4)why.push('سیگنال خلاف روند است و رد شد.');
+  if(n<25&&side!=='WAIT'){side='WAIT';why.push('کندل‌های دیده‌شده کم است؛ برای امنیت وارد نشوید.')}
+  const r={ok:true,n,side,score:s,conf:Math.min(95,45+Math.abs(s)*9),why,rsi:R,trend:tU?'up':tD?'down':'range',small:D.w0&&D.w0<3};
+  const pts=[...cal].sort((p,q)=>p.yr-q.yr),c1=pts[0],c2=pts[1],ok2=c2&&Math.abs(c2.yr-c1.yr)>=.05;
+  const toY=v=>(D.Y0+(D.Ht-v))/c.height;
+  const toP=ok2?(v=>c1.p+(toY(v)-c1.yr)*(c2.p-c1.p)/(c2.yr-c1.yr)):null;
+  let risk=Math.max(A*S.atrMul,1);
+  if(S.slPct&&ok2){const k=Math.abs((c2.yr-c1.yr)/(c2.p-c1.p))*c.height;risk=Math.max(1,toP(px)*S.slPct/100*k)}else if(S.slPct)r.pctIgnored=true;
+  if(side!=='WAIT'){const d=side==='SELL'?-1:1;last={e:toY(px),s:toY(px-d*risk),t:toY(px+d*risk*S.rr)};
+    if(ok2){r.cal=true;r.entry=toP(px);r.sl=toP(px-d*risk);r.tp=toP(px+d*risk*S.rr)}}else last=null;
+  r.price=ok2?toP(px):null;
+  r.pro=proAnalyze(C,A,toP);r.Ccount=n;
+  return r;
+}
+
+/* ---------- pro engine: multi-indicator prediction ---------- */
+const AC={crypto:'ارز دیجیتال',gold:'طلا/فلزات',forex:'فارکس',stock:'سهام',index:'شاخص',commodity:'کالا',iran:'بورس ایران'};
+const TFM={'1m':1,'5m':5,'15m':15,'1h':60,'4h':240,'1D':1440,'1W':10080};
+function emaA(a,n){const k=2/(n+1);let e=a[0];return a.map(x=>e=x*k+e*(1-k))}
+function durFa(min){if(min<60)return Math.round(min)+' دقیقه';if(min<1440)return (min/60).toFixed(1)+' ساعت';if(min<10080)return (min/1440).toFixed(1)+' روز';return (min/10080).toFixed(1)+' هفته'}
+function proAnalyze(C,A,toP){
+  const n=C.length,cl=C.map(x=>x.c),px=cl[n-1],P=v=>toP?toP(v):null;
+  const f=Math.max(3,Math.round(n*.12)),m=Math.max(6,Math.round(n*.3)),l=Math.max(10,Math.round(n*.6));
+  const eF=emaA(cl,f),eM=emaA(cl,m),eL=emaA(cl,l);
+  const m12=emaA(cl,Math.max(4,Math.round(n*.15))),m26=emaA(cl,Math.max(8,Math.round(n*.33))),macd=m12.map((v,i)=>v-m26[i]),sig=emaA(macd,Math.max(3,Math.round(n*.11))),hist=macd[n-1]-sig[n-1],histP=macd[n-2]-sig[n-2];
+  const bn=Math.min(20,n-1),win=cl.slice(-bn),mu=win.reduce((a,b)=>a+b,0)/bn,sd=Math.sqrt(win.reduce((a,b)=>a+(b-mu)**2,0)/bn)||1e-9,bbU=mu+2*sd,bbL=mu-2*sd,pB=(px-bbL)/(bbU-bbL);
+  const R=rsiF(C,Math.max(3,Math.min(14,n-1)));
+  // swings -> support/resistance + structure
+  const k=2,hi=[],lo=[];for(let i=k;i<n-k;i++){let H=1,L=1;for(let j=1;j<=k;j++){if(!(C[i].h>=C[i-j].h&&C[i].h>=C[i+j].h))H=0;if(!(C[i].l<=C[i-j].l&&C[i].l<=C[i+j].l))L=0}if(H)hi.push(C[i].h);if(L)lo.push(C[i].l)}
+  const res=hi.filter(v=>v>px).sort((a,b)=>a-b),sup=lo.filter(v=>v<px).sort((a,b)=>b-a);
+  const hh=hi.length>1&&hi[hi.length-1]>hi[hi.length-2],hl=lo.length>1&&lo[lo.length-1]>lo[lo.length-2],lh=hi.length>1&&hi[hi.length-1]<hi[hi.length-2],ll=lo.length>1&&lo[lo.length-1]<lo[lo.length-2];
+  const struct=hh&&hl?'up':lh&&ll?'down':'range';
+  let sc=0;const why=[],F=[];
+  const stack=eF[n-1]>eM[n-1]&&eM[n-1]>eL[n-1]?1:eF[n-1]<eM[n-1]&&eM[n-1]<eL[n-1]?-1:0;
+  sc+=stack*2;why.push(stack>0?'میانگین‌های متحرک کوتاه/میان/بلند به ترتیب صعودی چیده شده‌اند (روند چندلایه صعودی).':stack<0?'میانگین‌های متحرک به ترتیب نزولی‌اند (روند چندلایه نزولی).':'میانگین‌ها درهم‌اند؛ بازار در فاز رنج/بلاتکلیفی است.');
+  sc+=struct==='up'?1.5:struct==='down'?-1.5:0;why.push(struct==='up'?'ساختار بازار: سقف و کف‌های بالاتر (HH/HL).':struct==='down'?'ساختار بازار: سقف و کف‌های پایین‌تر (LH/LL).':'ساختار بازار مشخص نیست.');
+  if(hist>0&&hist>histP){sc+=1;why.push('MACD بالای خط سیگنال و مومنتوم رو به افزایش است.')}else if(hist<0&&hist<histP){sc-=1;why.push('MACD زیر خط سیگنال و مومنتوم نزولی در حال تقویت است.')}else why.push('مومنتوم MACD در حال ضعیف‌شدن است (احتمال تغییر یا استراحت).');
+  if(R>70){sc-=1;why.push('RSI بالای ۷۰: اشباع خرید، ورود خرید جدید پرریسک است.')}else if(R<30){sc+=1;why.push('RSI زیر ۳۰: اشباع فروش، احتمال برگشت.')}else if(R>50)sc+=.5;else sc-=.5;
+  if(pB>1){sc-=.5;why.push('قیمت بالای باند بولینگر است؛ احتمال برگشت به میانگین.')}else if(pB<0){sc+=.5;why.push('قیمت زیر باند بولینگر است؛ احتمال برگشت به میانگین.')}
+  const bias=sc>=2.5?'BUY':sc<=-2.5?'SELL':'WAIT',d=bias==='SELL'?-1:1;
+  // entry zone: pullback toward fast EMA / nearest level
+  const ref=bias==='SELL'?(res[0]??px+A*.5):(sup[0]??px-A*.5);
+  const eA=px,eB=bias==='WAIT'?px:(px+ref)/2;
+  const slv=bias==='SELL'?Math.max(res[0]??0,px)+A*S.atrMul*.6:Math.min(sup[0]??px,px)-A*S.atrMul*.6;
+  const risk=Math.abs(px-slv)||A;
+  const lvT=bias==='SELL'?sup:res;
+  const tp=[1,2,3].map(i=>{const st=px+d*risk*(i===1?1:i===2?S.rr:S.rr*1.6);const lvl=lvT[i-1];return lvl&&Math.abs(lvl-px)>risk*.8&&Math.abs(lvl-px)<Math.abs(st-px)*1.3?lvl:st});
+  const tfm=TFM[S.tf]||60,cand=x=>Math.max(1,Math.round(Math.abs(x-px)/(A||1)));
+  const conf=Math.round(Math.min(85,40+Math.abs(sc)*6+(n>=40?5:0)));
+  const tpc=tp.map(cand);
+  const timing=bias==='WAIT'?'فعلاً ورود نکنید؛ صبر کنید تا '+(res[0]?'شکست و تثبیت بالای مقاومت':'تشکیل روند')+' یا '+(sup[0]?'برگشت از حمایت':'سیگنال تأییدی')+' رخ دهد. هر '+durFa(tfm*3)+' دوباره بررسی کنید.':
+    'ورود: در '+durFa(tfm)+' تا '+durFa(tfm*3)+' آینده (۱ تا ۳ کندل) با پولبک به ناحیه ورود و بسته‌شدن کندل تأییدی. TP1 تقریباً ظرف '+tpc[0]+' کندل (~'+durFa(tpc[0]*tfm)+')، TP2 ~'+durFa(tpc[1]*tfm)+'، TP3 ~'+durFa(tpc[2]*tfm)+'. اگر تا '+durFa(tpc[1]*tfm*2)+' به TP1 نرسید، معامله را دستی ببندید (ابطال زمانی).';
+  const plan=bias==='WAIT'?[]:['ورود پله‌ای: ۵۰٪ حجم در ناحیه ورود، ۵۰٪ بعد از تأیید کندل بعدی.','در TP1، ۴۰٪ را ببندید و حد ضرر را به نقطه ورود (سربه‌سر) ببرید.','در TP2، ۳۰٪ دیگر را ببندید؛ ۳۰٪ باقی‌مانده را با حد ضرر شناور (Trailing) تا TP3 نگه دارید.','اگر کندل بسته‌شده آن طرف حد ضرر رفت، تحلیل باطل است؛ بدون تعلل خارج شوید.'];
+  const sc2={bull:'سناریوی صعودی: '+(res[0]?'شکست مقاومت '+(P(res[0])!=null?fmt(P(res[0]),4):'نزدیک')+' راه را تا مقاومت‌های بعدی باز می‌کند.':'ادامه صعود با حفظ کف‌های بالاتر.'),
+    bear:'سناریوی نزولی: '+(sup[0]?'شکست حمایت '+(P(sup[0])!=null?fmt(P(sup[0]),4):'نزدیک')+' فشار فروش را تشدید می‌کند.':'ادامه افت با تشکیل کف پایین‌تر.'),
+    inv:'ابطال: '+(bias==='WAIT'?'—':'بسته‌شدن کندل '+(bias==='BUY'?'زیر ':'بالای ')+(P(slv)!=null?fmt(P(slv),4):'خط حد ضرر')+'.')};
+  return {bias,score:+sc.toFixed(1),conf,why,timing,plan,sc:sc2,rsi:R,macd:hist,pB,struct,
+    lv:{eA,eB,sl:slv,tp,sup:sup.slice(0,3),res:res.slice(0,3)},toP,C:C.slice(-60),ema:[eF.slice(-60),eM.slice(-60)],rr:(Math.abs(tp[1]-px)/risk).toFixed(2)};
+}
+/*END_ENGINE*/
+
+/* ---------- analysis -> chat ---------- */
+async function analyze(manual){
+  if(busy||!srcSize())return;busy=true;
+  try{const r=engine(grab());
+    if(!r.ok){if(manual)bot(esc(r.msg),['راهنما']);return}
+    const v=adjust(r),sig=v.side+'|'+r.n+'|'+Math.round(r.score);
+    if(!manual&&sig===lastSig)return;lastSig=sig;LV=v;
+    bot(card(v),chipsFor(v));
+    if(S.akey&&manual){bot('در حال دریافت تحلیل عمیق از Claude…');askClaude(v).then(a=>{if(a)bot(aiCard(a),chipsFor(v))}).catch(e=>bot('تحلیل Claude انجام نشد ('+esc(e.message)+'). کلید API، مدل یا اینترنت را بررسی کنید؛ تحلیل داخلی بالا معتبر است.'))}
+  }catch(e){if(manual)bot('خواندن این تصویر کامل نشد. یک اسکرین‌شات واضح‌تر بدهید یا ناحیه کندل‌ها را مشخص کنید.',['راهنما'])}
+  finally{busy=false}
+}
+function adjust(r){const v={...r};
+  if(v.side==='SELL'&&S.mk==='spot'){v.side='WAIT';v.waitWhy='سیگنال فروش آمد ولی در بازار اسپات نمی‌شود روی نزول معامله کرد. فعلاً صبر کنید.'}
+  else if(v.side==='WAIT')v.waitWhy='نشانه‌ها هنوز کافی و هم‌جهت نیستند. صبر هم یک تصمیم درست است و جلوی ضرر بی‌دلیل را می‌گیرد.';
+  const note=[];
+  if(v.side!=='WAIT'&&v.cal){const rd=Math.abs(v.entry-v.sl);let ml=S.maxLoss||S.bal*S.risk/100,q=ml/rd;
+    if(S.mk==='spot'&&q*v.entry>S.bal*.98){q=S.bal*.98/v.entry;ml=q*rd;note.push('در اسپات نمی‌شود بیشتر از موجودی خرید؛ مقدار به موجودی محدود شد.')}
+    v.qty=q;v.maxLoss=ml;v.gain=ml*S.rr;if(ml/S.bal*100>3)note.push('ریسک این معامله از حد پیش‌فرض ۳٪ بالاتر است؛ انتخاب خودتان.');
+    note.push('تنظیم فعلی: '+(S.maxLoss?'ضرر ثابت '+fmt(S.maxLoss):'ریسک '+S.risk+'٪')+' · سود '+S.rr+' برابر ضرر'+(S.slPct?' · فاصله حد ضرر '+S.slPct+'٪ قیمت':''))}
+  if(v.pctIgnored)note.push('فاصله درصدی حد ضرر بعد از کالیبره قیمت اعمال می‌شود؛ فعلاً از نوسان نمودار استفاده کردم.');
+  if(note.length)v.note=note.join(' ');
+  return v}
+function card(v){
+  const T={BUY:'خرید',SELL:'فروش',WAIT:'فعلاً وارد نشو'}[v.side];
+  let h='<div class="vd '+v.side+'"><b>'+T+'</b>'+(v.side!=='WAIT'?'<span>اطمینان '+v.conf+'٪</span>':'')+'</div>';
+  if(v.side==='WAIT')h+='<p>'+esc(v.waitWhy)+'</p>';
+  else if(v.cal){h+='<div class="lv"><div><span>ورود</span><b>'+fmt(v.entry,4)+'</b></div><div><span>حد ضرر</span><b class="dn">'+fmt(v.sl,4)+'</b></div><div><span>حد سود</span><b class="up">'+fmt(v.tp,4)+'</b></div><div><span>مقدار</span><b>'+fmt(v.qty,4)+'</b></div><div><span>بیشترین ضرر</span><b class="dn">-'+fmt(v.maxLoss)+'</b></div><div><span>سود هدف</span><b class="up">+'+fmt(v.gain)+'</b></div></div>'}
+  else h+='<p>خط‌های ورود، حد ضرر و حد سود روی تصویر کشیده شد. برای عدد دقیق و مقدار معامله، یک بار قیمت را کالیبره کنید.</p>';
+  h+='<ul>'+v.why.slice(0,4).map(w=>'<li>'+esc(w)+'</li>').join('')+'</ul>';
+  if(v.side!=='WAIT'&&v.cal)h+='<p>حد ضرر را همان لحظه ورود در اپ ثبت کنید.</p>';
+  if(v.note)h+='<small>'+esc(v.note)+'</small>';
+  h+=proCard(v);
+  if(v.small)h+='<small>کندل‌ها ریزند؛ زوم کنید تا دقت بالاتر برود.</small>';
+  return h}
+function miniChart(p){const C=p.C,W=320,H=150,lv=p.bias==='WAIT'?[]:[[p.lv.sl,'#ff4d6a','SL'],[p.lv.eA,'#e9eefb','E'],...p.lv.tp.map((t,i)=>[t,'#22d3a6','TP'+(i+1)])];
+  const all=[...C.flatMap(x=>[x.h,x.l]),...lv.map(x=>x[0])],mx=Math.max(...all),mn=Math.min(...all),Y=v=>6+(H-12)*(1-(v-mn)/((mx-mn)||1)),bw=(W-40)/C.length;
+  let g='<svg class="mini" viewBox="0 0 '+W+' '+H+'" direction="ltr">';
+  C.forEach((x,i)=>{const cx=4+i*bw+bw/2,col=x.c>=x.o?'#22d3a6':'#ff4d6a';g+='<line x1="'+cx+'" x2="'+cx+'" y1="'+Y(x.h)+'" y2="'+Y(x.l)+'" stroke="'+col+'"/><rect x="'+(cx-bw*.35)+'" width="'+bw*.7+'" y="'+Y(Math.max(x.o,x.c))+'" height="'+Math.max(1,Math.abs(Y(x.o)-Y(x.c)))+'" fill="'+col+'"/>'});
+  [[p.ema[0],'#f6b93b'],[p.ema[1],'#8ea2ff']].forEach(([e,c])=>g+='<polyline fill="none" stroke="'+c+'" stroke-width="1.3" points="'+e.map((v,i)=>(4+i*bw+bw/2).toFixed(1)+','+Y(v).toFixed(1)).join(' ')+'"/>');
+  lv.forEach(([v,c,t])=>g+='<line x1="0" x2="'+(W-34)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="'+c+'" stroke-dasharray="4 3"/><text x="'+(W-32)+'" y="'+(Y(v)+4)+'" fill="'+c+'" font-size="10">'+t+'</text>');
+  return g+'</svg>'}
+function proCard(v){const p=v.pro;if(!p)return'';const P=x=>p.toP?fmt(p.toP(x),4):'(کالیبره کنید)';
+  const T={BUY:'پیش‌بینی: صعودی ← خرید',SELL:'پیش‌بینی: نزولی ← فروش'+(S.mk==='spot'?' (در اسپات: خروج/عدم خرید)':''),WAIT:'پیش‌بینی: خنثی ← صبر'}[p.bias];
+  let h='<div class="pro"><h5>تحلیل پیشرفته '+esc(AC[S.ac]||'')+(S.sym?' · '+esc(S.sym):'')+' · '+esc(S.tf)+'</h5><div class="vd '+p.bias+'"><b>'+T+'</b><span>احتمال تخمینی '+p.conf+'٪ · امتیاز '+p.score+'</span></div>';
+  h+='<div class="gauge" title="فروش قوی ← → خرید قوی"><i style="left:'+Math.max(0,Math.min(98,50+p.score*6))+'%"></i></div>'+miniChart(p);
+  h+='<div class="ind"><div>RSI<br><b>'+p.rsi.toFixed(0)+'</b></div><div>MACD<br><b class="'+(p.macd>0?'up':'dn')+'">'+(p.macd>0?'+':'−')+'</b></div><div>%B<br><b>'+p.pB.toFixed(2)+'</b></div></div>';
+  if(p.bias!=='WAIT'){h+='<div class="lv"><div><span>ناحیه ورود</span><b>'+P(p.lv.eB)+' – '+P(p.lv.eA)+'</b></div><div><span>حد ضرر</span><b class="dn">'+P(p.lv.sl)+'</b></div><div><span>R:R تا TP2</span><b>1:'+p.rr+'</b></div>'+p.lv.tp.map((t,i)=>'<div><span>TP'+(i+1)+'</span><b class="up">'+P(t)+'</b></div>').join('')+'</div>'}
+  h+='<p><b>زمان‌بندی:</b> '+esc(p.timing)+'</p>';
+  if(p.lv.sup.length||p.lv.res.length)h+='<p><b>حمایت‌ها:</b> '+(p.lv.sup.map(P).join('، ')||'—')+' · <b>مقاومت‌ها:</b> '+(p.lv.res.map(P).join('، ')||'—')+'</p>';
+  h+='<ul>'+p.why.map(w=>'<li>'+esc(w)+'</li>').join('')+'</ul>';
+  if(p.plan.length)h+='<p><b>برنامه معامله:</b></p><ol>'+p.plan.map(w=>'<li>'+esc(w)+'</li>').join('')+'</ol>';
+  h+='<p>'+esc(p.sc.bull)+'<br>'+esc(p.sc.bear)+'<br>'+esc(p.sc.inv)+'</p>';
+  h+='<small class="disc">پیش‌بینی‌ها احتمالاتی‌اند و تضمینی نیستند؛ توصیه مالی نیست. زمان‌ها تخمینی از نوسان (ATR) و تایم‌فریم انتخابی‌اند.</small></div>';
+  return h}
+/* ---------- Claude expert analyst (optional, needs user's own API key) ---------- */
+const SYS=`شما یک تحلیلگر ارشد بازارهای مالی با بیش از ۲۰ سال تجربه در کریپتو، طلا و فلزات، فارکس، سهام، شاخص‌ها، کالاها و بورس ایران هستید. وظیفه شما تحلیل دقیق، منظم و بی‌طرف است، نه هیجان‌انگیز.
+روش کار (به ترتیب):
+1) شناسایی دارایی، تایم‌فریم و ویژگی‌های آن بازار (ساعات معاملاتی، نقدشوندگی، اخبار مهم مثل CPI/FOMC/NFP برای فارکس و طلا، گزارش سود برای سهام، دامنه نوسان و صف برای بورس ایران، رفتار ۲۴/۷ کریپتو).
+2) تحلیل چندتایم‌فریمی: روند بالاتر، روند جاری و تایم‌فریم ورود را تفکیک کن.
+3) ساختار بازار: HH/HL یا LH/LL، شکست ساختار (BOS/CHoCH)، نواحی عرضه و تقاضا، نقدینگی بالای سقف‌ها و زیر کف‌ها.
+4) حمایت و مقاومت کلیدی، خطوط روند، الگوهای کلاسیک و کندلی.
+5) اندیکاتورها: EMA (کوتاه/میان/بلند)، RSI و واگرایی، MACD، باندهای بولینگر، حجم (اگر دیده می‌شود)، ATR برای نوسان. داده‌های محاسبه‌شده محلی که داده می‌شود را بررسی و در صورت تضاد با تصویر، دلیلش را بگو.
+6) مدیریت ریسک: حد ضرر منطقی پشت ساختار (نه دلخواه)، حداقل R:R یک به دو، حجم بر اساس درصد ریسک کاربر.
+7) اگر شواهد کافی یا هم‌جهت نیست، صادقانه «صبر» بده. هرگز قطعیت یا سود تضمینی ادعا نکن؛ احتمال‌ها را واقع‌بینانه بیان کن.
+خروجی را فقط به صورت JSON معتبر و بدون متن اضافه بده، همه متن‌ها به فارسی:
+{"bias":"BUY|SELL|WAIT","confidence":0-100,"htf_trend":"","ltf_trend":"","structure":"","key_levels":{"support":[],"resistance":[]},"indicators":"","entry_zone":[min,max],"entry_trigger":"","stop_loss":0,"take_profits":[tp1,tp2,tp3],"risk_reward":"","entry_timing":"","exit_timing":"","position_management":"","scenarios":{"bullish":"","bearish":"","invalidation":""},"news_risks":"","reasoning":"توضیح کامل و قدم‌به‌قدم"}
+اگر محور قیمت در تصویر خوانا نیست، اعداد را null بگذار و در reasoning بگو.`;
+async function askClaude(v){
+  if(!S.akey)return null;
+  const c=grab(),img=c.toDataURL('image/jpeg',.85).split(',')[1],p=v.pro,P=x=>p&&p.toP?+p.toP(x).toFixed(6):null;
+  const local={asset_class:S.ac,symbol:S.sym||'نامشخص',timeframe:S.tf,market:S.mk,balance:S.bal,risk_pct:S.risk,rr_target:S.rr,candles_detected:v.Ccount,
+    local_engine:p?{bias:p.bias,score:p.score,rsi:+p.rsi.toFixed(1),macd_hist_sign:Math.sign(p.macd),bollinger_pctB:+p.pB.toFixed(2),structure:p.struct,last_price:v.price,supports:p.lv.sup.map(P),resistances:p.lv.res.map(P),reasons:p.why}:null};
+  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':S.akey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:S.amodel||'claude-sonnet-4-5',max_tokens:2500,system:SYS,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:img}},{type:'text',text:'این نمودار را تحلیل کن. داده‌های محاسبه‌شده محلی:\n'+JSON.stringify(local)}]}]})});
+  if(!r.ok)throw new Error('API '+r.status);
+  const j=await r.json(),t=(j.content||[]).map(x=>x.text||'').join(''),m=t.match(/\{[\s\S]*\}/);
+  return m?JSON.parse(m[0]):{reasoning:t};
+}
+function aiCard(a){const f=x=>x==null||x===''?'—':(typeof x==='number'?fmt(x,4):esc(x)),L=a=>(a||[]).map(f).join('، ')||'—';
+  const T={BUY:'خرید',SELL:'فروش',WAIT:'صبر'}[a.bias]||'—';
+  let h='<div class="pro"><h5>تحلیل تحلیلگر هوش مصنوعی (Claude)</h5><div class="vd '+(a.bias||'WAIT')+'"><b>'+T+'</b><span>اطمینان '+f(a.confidence)+'٪</span></div>';
+  h+='<div class="lv"><div><span>ناحیه ورود</span><b>'+L(a.entry_zone)+'</b></div><div><span>حد ضرر</span><b class="dn">'+f(a.stop_loss)+'</b></div><div><span>R:R</span><b>'+f(a.risk_reward)+'</b></div>'+(a.take_profits||[]).map((t,i)=>'<div><span>TP'+(i+1)+'</span><b class="up">'+f(t)+'</b></div>').join('')+'</div>';
+  const row=(k,x)=>x?'<p><b>'+k+':</b> '+f(x)+'</p>':'';
+  h+=row('روند بالاتر',a.htf_trend)+row('روند جاری',a.ltf_trend)+row('ساختار',a.structure)+row('اندیکاتورها',a.indicators)+row('ماشه ورود',a.entry_trigger)+row('زمان ورود',a.entry_timing)+row('زمان خروج',a.exit_timing)+row('مدیریت پوزیشن',a.position_management);
+  if(a.key_levels)h+='<p><b>حمایت:</b> '+L(a.key_levels.support)+' · <b>مقاومت:</b> '+L(a.key_levels.resistance)+'</p>';
+  if(a.scenarios)h+=row('سناریوی صعودی',a.scenarios.bullish)+row('سناریوی نزولی',a.scenarios.bearish)+row('ابطال',a.scenarios.invalidation);
+  h+=row('ریسک خبری',a.news_risks)+row('استدلال کامل',a.reasoning);
+  return h+'<small class="disc">خروجی هوش مصنوعی احتمالاتی است و ممکن است اشتباه کند؛ توصیه مالی نیست.</small></div>'}
+const chipsFor=v=>v.side==='WAIT'?['چرا؟','تحلیل مجدد','راهنما']:v.cal?['چرا؟','چطور وارد شوم؟','ضرر کمتر','حالت امن','تحلیل مجدد']:['کالیبره قیمت','چرا؟','تحلیل مجدد'];
+
+/* ---------- chatbot brain ---------- */
+const GUIDE='<p>کار با من ساده است:</p><ol><li>اسکرین‌شات نمودار را اینجا Paste کنید (Ctrl+V) یا «اشتراک صفحه» را بزنید.</li><li>خودم کندل‌ها را می‌خوانم و می‌گویم خرید، فروش یا صبر.</li><li>برای عدد دقیق ورود و حد ضرر، یک بار «کالیبره قیمت» را انجام دهید: دو نقطه از محور قیمت را کلیک کنید و قیمتشان را بنویسید.</li></ol><p>هر سؤالی هم داشتید بپرسید، مثلاً «RSI یعنی چی؟» یا «حد ضرر چیست؟».</p>';
+function lvIf(f,none){return LV?f(LV):none}
+const RULES=[
+ [/^(سلام|درود|های|hi|hello|hey)/,()=>['سلام! من دستیار A Trade هستم. نمودارتان را نشان بدهید تا بگویم چه کار کنید.',['راهنما','ریسک چیست؟','RSI یعنی چی؟']]],
+ [/(پاک|حذف).*(عکس|اسکرین|تصویر|شات)|^(پاک کن|ریست)$/,()=>{clearShot();return null}],
+ [/(ممنون|مرسی|تشکر|دمت گرم)/,()=>['خواهش می‌کنم. موفق باشید و حد ضرر را یادتان نرود.']],
+ [/موجودی\s*[:=]?\s*(\d+(?:\.\d+)?)/,m=>{S.bal=+m[1];$('#bal').value=S.bal;saveS();return['موجودی روی '+fmt(S.bal)+' تنظیم شد.'+(LV?' دوباره تحلیل کنم؟':''),LV?['تحلیل مجدد']:null]}],
+ [/ریسک\s*[:=]?\s*(\d+(?:\.\d+)?)/,m=>{S.risk=Math.min(3,Math.max(0.1,+m[1]));$('#risk').value=S.risk;saveS();return['ریسک هر معامله روی '+S.risk+'٪ تنظیم شد.'+(S.risk>2?' توجه: بیشتر از ۲٪ برای مبتدی خطرناک است.':'')+(LV?' دوباره تحلیل کنم؟':''),LV?['تحلیل مجدد']:null]}],
+ [/(اسپات)\s*(باشه|کن|هست)?$|^اسپات/,()=>{S.mk='spot';$('#mk').value='spot';saveS();return['بازار روی اسپات (فقط خرید) تنظیم شد.']}],
+ [/فیوچرز|فیوچر/,()=>{S.mk='fut';$('#mk').value='fut';saveS();return['بازار روی فیوچرز تنظیم شد. حواستان به اهرم باشد؛ اهرم بالا ضرر را هم چند برابر می‌کند.']}],
+ [/کالیبره|کالیبر/,()=>{setTimeout(()=>{if(mode!=='cal')setMode('cal')},0);return null}],
+ [/انتخاب ناحیه|ناحیه/,()=>{setTimeout(()=>{if(mode!=='sel')setMode('sel')},0);return null}],
+ [/تحلیل خودکار\s*(خاموش|قطع)/,()=>{clearInterval(timer);return['تحلیل خودکار خاموش شد.']}],
+ [/تحلیل خودکار/,()=>{if(!video)return['تحلیل خودکار فقط با «اشتراک صفحه» کار می‌کند.'];restartAuto();return['تحلیل خودکار روشن است. هر '+S.every+' ثانیه نمودار را می‌خوانم و فقط وقتی چیزی عوض شد خبر می‌دهم.']}],
+ [/تحلیل|دوباره|مجدد/,()=>{if(!srcSize())return['هنوز تصویری ندارم. اسکرین‌شات را Paste کنید یا اشتراک صفحه بزنید.'];lastSig='';analyze(true);return null}],
+ [/(پیش ?بینی|کی بخرم|کی بفروشم|کی وارد|کی خارج|زمان (ورود|خروج))/,()=>lvIf(v=>[v.pro?'<p><b>زمان‌بندی:</b> '+esc(v.pro.timing)+'</p>'+(v.pro.plan.length?'<ol>'+v.pro.plan.map(w=>'<li>'+esc(w)+'</li>').join('')+'</ol>':''):'تحلیلی نیست.'],['اول نمودار را نشانم بدهید.'])],
+ [/(راهنما|کمک|چطور کار|چجوری|شروع|help)/,()=>[GUIDE,['تحلیل مجدد','ریسک چیست؟']]],
+ [/(چطور|چجوری|چگونه).*(وارد|ورود|بخرم|معامله)|چطور وارد/,()=>lvIf(v=>v.side==='WAIT'?['الان پیشنهادم ورود نیست. بهتر است صبر کنید.']:['<ol><li>در اپ معاملاتی وارد صفحه سفارش همین نماد شوید.</li><li>سمت '+(v.side==='BUY'?'Buy / Long':'Sell / Short')+' را بزنید.</li><li>'+(v.cal?'قیمت ورود '+fmt(v.entry,4)+' و مقدار '+fmt(v.qty,4)+' را بگذارید.':'اول قیمت را کالیبره کنید تا اعداد را بدهم.')+'</li><li>حد ضرر'+(v.cal?' ('+fmt(v.sl,4)+')':'')+' را حتماً ثبت کنید.</li><li>حد سود'+(v.cal?' ('+fmt(v.tp,4)+')':'')+' را ثبت و سفارش را تأیید کنید.</li></ol>'],['اول یک نمودار نشانم بدهید تا راهنمایی دقیق بدهم.'])],
+ [/(الان|حالا).*(بخر|بفروش|وارد|ورود|بزنم)|بخرم|بفروشم/,()=>lvIf(v=>v.side==='WAIT'?['طبق آخرین تحلیل: نه. '+v.waitWhy,['چرا؟']]:['طبق آخرین تحلیل سیگنال '+(v.side==='BUY'?'خرید':'فروش')+' با اطمینان '+v.conf+'٪ دارم، ولی فقط با حد ضرر وارد شوید و حجم را رعایت کنید.',['چطور وارد شوم؟']],['هنوز نمودار ندیده‌ام. اسکرین‌شات بدهید تا بگویم.'])],
+ [/^(چرا|دلیل|چرا؟)|به چه دلیل/,()=>lvIf(v=>['<p>دلیل‌های من:</p><ul>'+v.why.map(w=>'<li>'+esc(w)+'</li>').join('')+'</ul>'],['هنوز نموداری تحلیل نکرده‌ام.'])],
+ [/حد ضرر|استاپ|stop/,()=>['<p>حد ضرر (Stop Loss) سقف ضرر شماست: اگر قیمت به آن برسد، معامله خودکار بسته می‌شود تا ضرر بزرگ نشود. بدون آن یک اشتباه می‌تواند بخش بزرگی از حساب را ببرد.</p>'+lvIf(v=>v.cal&&v.side!=='WAIT'?'<p>برای این تحلیل: '+fmt(v.sl,4)+'</p>':'','')]],
+ [/حد سود|تیک پروفیت|take profit|tp/,()=>['<p>حد سود (Take Profit) نقطه‌ای است که معامله با سود بسته می‌شود. من آن را دو برابر فاصله حد ضرر می‌گذارم تا یک برد بتواند دو ضرر را جبران کند.</p>'+lvIf(v=>v.cal&&v.side!=='WAIT'?'<p>برای این تحلیل: '+fmt(v.tp,4)+'</p>':'','')]],
+ [/مقدار|حجم|چقدر.*(بخرم|بزنم|وارد|بذارم)/,()=>['<p>مقدار معامله = (موجودی × درصد ریسک) ÷ فاصله ورود تا حد ضرر. با موجودی '+fmt(S.bal)+' و ریسک '+S.risk+'٪ بیشترین ضرر هر معامله '+fmt(S.bal*S.risk/100)+' می‌شود.</p>'+lvIf(v=>v.qty?'<p>برای این تحلیل: '+fmt(v.qty,4)+'</p>':'','')]],
+ [/ریسک به ریوارد|ریوارد|نسبت سود/,()=>['نسبت سود به ضرر یعنی هر بار چند برابر آنچه ریسک می‌کنید سود هدف می‌گیرید. من فقط معامله‌هایی را پیشنهاد می‌دهم که حد سودشان دو برابر حد ضرر است؛ با این نسبت حتی اگر کمتر از نصف معامله‌ها برنده شوند، می‌شود سر به سر یا سودده ماند.']],
+ [/ریسک|مدیریت سرمایه/,()=>['<p>قانون ساده: در هر معامله بیش از ۱٪ موجودی را ریسک نکنید. با ۱۰۰۰ دلار یعنی بیشترین ضرر هر معامله ۱۰ دلار. ضرر روزانه را هم به ۳٪ برسانید، آن روز را ببندید. ریسک فعلی شما '+S.risk+'٪ است.</p>',['ریسک 0.5','ریسک 1']]],
+ [/rsi|آر اس آی/,()=>['RSI عددی بین ۰ تا ۱۰۰ است که سرعت صعود یا نزول قیمت را نشان می‌دهد. زیر ۳۰ یعنی افت زیاد (شاید برگردد) و بالای ۷۰ یعنی صعود زیاد (شاید اصلاح شود). به‌تنهایی سیگنال ورود نیست.']],
+ [/ema|میانگین متحرک|میانگین/,()=>['EMA میانگینی از قیمت است که به قیمت‌های اخیر وزن بیشتری می‌دهد. وقتی EMA سریع بالای EMA کند باشد، روند صعودی است و برعکس. من فقط در جهت روند پیشنهاد ورود می‌دهم.']],
+ [/چکش|hammer/,()=>['کندل چکش بدنه کوچک و سایه بلند پایینی دارد: فروشنده‌ها قیمت را پایین بردند ولی خریدارها برش گرداندند. بعد از افت، نشانه احتمالی برگشت صعودی است.']],
+ [/پوشا|engulf/,()=>['در الگوی پوشا، بدنه یک کندل بزرگ کندل قبلی را کامل می‌پوشاند. پوشای صعودی (سبز بزرگ روی قرمز) یعنی خریدارها کنترل را گرفته‌اند و پوشای نزولی عکس آن است.']],
+ [/ستاره|star/,()=>['ستاره صبحگاهی و شامگاهی الگوهای سه‌کندلی برگشتی‌اند: یک کندل بزرگ، یک کندل کوچک مردد و بعد کندل بزرگ در جهت مخالف. صبحگاهی نشانه صعود و شامگاهی نشانه نزول است.']],
+ [/دوجی|doji/,()=>['دوجی کندلی است که قیمت باز و بسته‌شدنش تقریباً یکی است؛ یعنی بازار مردد است. به‌تنهایی سیگنال نیست و باید کندل بعدی را دید.']],
+ [/روند|ترند|trend/,()=>['روند یعنی جهت کلی قیمت. «با روند معامله کن» یکی از مهم‌ترین قواعد است، برای همین سیگنال خلاف روند را رد می‌کنم.']],
+ [/اهرم|لوریج|leverage/,()=>['اهرم یعنی با پول قرضی معامله کنید؛ سود را چند برابر می‌کند ولی ضرر را هم. اهرم بالا (مثلاً ۲۰ برابر به بالا) یکی از دلایل اصلی از دست رفتن حساب‌هاست. اگر تازه‌کارید اسپات یا اهرم خیلی کم را انتخاب کنید.']],
+ [/دمو|آزمایشی|تمرین/,()=>['حساب دمو با پول مجازی کار می‌کند. پیشنهاد جدی من این است که حداقل چند هفته توصیه‌های این ابزار را روی دمو امتحان کنید و نتیجه واقعی‌اش را ببینید، بعد با مبلغ کم وارد حساب واقعی شوید.']],
+ [/(ضرر کردم|باختم|ضرر زدم|حسابم سوخت|از دست دادم)/,()=>['متأسفم، این اتفاق برای همه معامله‌گرها می‌افتد. الان بهترین کار این است: معامله را برای تلافی تکرار نکنید، اندازه معامله را بزرگ‌تر نکنید و اگر ضرر امروز به ۳٪ رسیده، امروز را ببندید. بعداً با آرامش دلیل ضرر را مرور کنید. اگر فشار روانی دارید با یک نفر نزدیک هم صحبت کنید.']],
+ [/(ترس|طمع|استرس|هیجان|احساس)/,()=>['احساسات بزرگ‌ترین دشمن معامله‌گر است. قبل از ورود، حد ضرر و حد سود را بنویسید و به آن پایبند بمانید. بعد از چند ضرر یا سود پشت‌سرهم یک استراحت کوتاه کنید.']],
+ [/(تضمین|مطمئن|قطعی|حتماً سود|(صد|100) درصد|ثروتمند|میلیونر)/,()=>['صادقانه بگویم: هیچ ابزار یا هوش مصنوعی‌ای سود را تضمین نمی‌کند، من هم همین‌طور. کاری که می‌کنم این است که جلوی ورودهای بی‌حساب و ریسک زیاد را بگیرم. تصمیم و مسئولیت نهایی با شماست.']],
+ [/کندل (چیه|چیست|یعنی)|کندل چی/,()=>['هر کندل قیمت باز، بسته، بالاترین و پایین‌ترین قیمت یک بازه زمانی را نشان می‌دهد. سبز یعنی بسته‌شدن بالاتر از بازشدن و قرمز یعنی پایین‌تر.']],
+ [/اسکرین|اشتراک|شیر/,()=>['در کامپیوتر دکمه «اشتراک صفحه» را بزنید و پنجره اپ معاملاتی را انتخاب کنید. روی گوشی اشتراک صفحه در مرورگر نیست؛ اسکرین‌شات بگیرید و Paste یا انتخاب کنید.']],
+ [/چی کار می‌کنی|کی هستی|تو کی|چه کاری/,()=>['من دستیار A Trade هستم و روی خود دستگاه شما اجرا می‌شوم. رنگ و شکل کندل‌ها را از تصویر می‌خوانم و بر اساس روند، الگوها و RSI می‌گویم خرید، فروش یا صبر. محدودیتم این است که فقط نمودارهای سبز و قرمز را می‌بینم.',['راهنما']]],
+];
+/* ---------- smarter brain: numbers, loss control, voice ---------- */
+const NW={'صفر':0,'یک':1,'یه':1,'دو':2,'سه':3,'چهار':4,'پنج':5,'شش':6,'شیش':6,'هفت':7,'هشت':8,'نه':9,'ده':10,'یازده':11,'دوازده':12,'سیزده':13,'چهارده':14,'پانزده':15,'پونزده':15,'شانزده':16,'شونزده':16,'هفده':17,'هجده':18,'نوزده':19,'بیست':20,'سی':30,'چهل':40,'پنجاه':50,'شصت':60,'هفتاد':70,'هشتاد':80,'نود':90,'صد':100,'یکصد':100,'دویست':200,'سیصد':300,'چهارصد':400,'پانصد':500,'ششصد':600,'هفتصد':700,'هشتصد':800,'نهصد':900};
+function faNums(t){
+  const tk=t.split(/\s+/),out=[];let i=0;
+  while(i<tk.length){
+    if(!(tk[i] in NW)&&tk[i]!=='نیم'){out.push(tk[i]);i++;continue}
+    let tot=0,cur=0,dec=0,j=i;
+    while(j<tk.length){const w=tk[j];
+      if(w in NW){cur+=NW[w];j++}
+      else if(w==='هزار'){tot+=(cur||1)*1000;cur=0;j++}
+      else if(w==='میلیون'){tot+=(cur||1)*1e6;cur=0;j++}
+      else if(w==='نیم'){dec=.5;j++}
+      else if(w==='ممیز'){j++;let ds='';while(j<tk.length&&(tk[j] in NW)&&NW[tk[j]]<10){ds+=NW[tk[j]];j++}dec=parseFloat('0.'+(ds||'0'))}
+      else if(w==='و'&&j+1<tk.length&&((tk[j+1] in NW)||tk[j+1]==='نیم'||tk[j+1]==='هزار')){j++}
+      else break}
+    out.push(String(+(tot+cur+dec).toFixed(4)));i=j}
+  return out.join(' ');
+}
+const eff=()=>S.maxLoss||S.bal*S.risk/100;
+function done(msg){syncIn();saveS();const re=!!(LV&&srcSize());if(re){lastSig='';setTimeout(()=>analyze(true),500)}return[msg+(re?' دوباره محاسبه می‌کنم…':''),['تنظیمات من','حالت امن','تحلیل مجدد']]}
+const sumS=()=>'<ul><li>موجودی: '+fmt(S.bal)+'</li><li>بیشترین ضرر هر معامله: '+fmt(eff())+' ('+(eff()/S.bal*100).toFixed(2)+'٪ موجودی)'+(S.maxLoss?' - مبلغ ثابت':'')+'</li><li>فاصله حد ضرر: '+(S.slPct?S.slPct+'٪ قیمت':S.atrMul+' برابر نوسان کندل‌ها (ATR)')+'</li><li>سود هدف: '+S.rr+' برابر ضرر</li><li>بازار: '+(S.mk==='spot'?'اسپات':'فیوچرز')+'</li></ul>';
+const CMDS='<p>چند نمونه دستور (تایپی یا صوتی):</p><ul><li>«ریسک نیم درصد» یا «ریسک ۵ درصد» (بالاتر از ۳٪ را فقط وقتی خودتان بگویید قبول می‌کنم؛ بالای ۱۰٪ تأیید جداگانه می‌خواهد)</li><li>«بیشترین ضرر بیست دلار»</li><li>«حد ضرر ۲ درصد» یا «حد ضرر دورتر / نزدیک‌تر»</li><li>«سود را سه برابر ضرر کن»</li><li>«حالت امن»، «حالت متعادل»، «حالت جسورانه»</li><li>«ضرر کمتر» یا «ضرر بیشتر»</li><li>«اگر ۵ بار پشت‌سرهم ضرر کنم چه می‌شود؟»</li><li>«تحلیل هر ۱۰ ثانیه»</li><li>«تنظیمات من»، «تحلیل مجدد»، «پاک کن»</li></ul><p>اشتراک صفحه را فقط خودتان با دکمه شروع می‌کنید، چون مرورگر اجازه نمی‌دهد با صدا شروع شود.</p>';
+const ctx={topic:null};
+const TOP=[['stop',/حد ضرر|استاپ/],['rr',/ریوارد|نسبت سود/],['risk',/ریسک|مدیریت|ضرر/],['rsi',/rsi|آر اس آی/],['ema',/ema|میانگین/],['pattern',/چکش|پوشا|ستاره|دوجی|کندل/],['lev',/اهرم|لوریج/]];
+const EXT={
+ stop:()=>'<p>مثال: با موجودی '+fmt(S.bal)+' و بیشترین ضرر '+fmt(eff())+'، فرض کنید روی قیمت ۱۰۰ می‌خرید و حد ضرر ۹۸ است. فاصله ۲ واحد است، پس مقدار = '+fmt(eff())+' ÷ ۲ = '+fmt(eff()/2)+' واحد. اگر قیمت به ۹۸ برسد حدود '+fmt(eff())+' ضرر می‌کنید، نه بیشتر. حد ضرر دورتر یعنی مقدار کمتر ولی کمتر احتمال دارد با نوسان معمولی خورده شود؛ نزدیک‌تر برعکس.</p>',
+ rr:()=>'<p>مثال: اگر هر معامله '+fmt(eff())+' ریسک داشته باشد و سود هدف '+S.rr+' برابر باشد، هر برد حدود '+fmt(eff()*S.rr)+' می‌دهد. با ۱۰ معامله و فقط ۴ برد: '+fmt(4*eff()*S.rr)+' سود منهای ۶ ضرر ('+fmt(6*eff())+') = '+fmt(4*eff()*S.rr-6*eff())+'.</p>',
+ risk:()=>'<p>مثال: با '+fmt(S.bal)+' و ریسک '+S.risk+'٪ هر ضرر '+fmt(S.bal*S.risk/100)+' است. حتی ۱۰ ضرر پشت‌سرهم حساب را تنها به حدود '+fmt(S.bal*Math.pow(1-S.risk/100,10))+' می‌رساند و حساب زنده می‌ماند. با ریسک ۱۰٪ همان ۱۰ ضرر حدود ۶۵٪ حساب را می‌برد.</p>',
+ rsi:()=>'<p>RSI فقط یک نشانه است. در بازار با روند قوی ممکن است مدت‌ها بالای ۷۰ یا زیر ۳۰ بماند، برای همین من فقط با الگوی کندلی و روند کنارش به آن اعتماد می‌کنم.</p>',
+ ema:()=>'<p>وقتی EMA سریع از پایین EMA کند را ببرد و بالا بزند، به آن تقاطع صعودی می‌گویند. من فقط جهت کلی (کدام بالاتر است) را نگاه می‌کنم تا فقط هم‌جهت روند پیشنهاد دهم.</p>',
+ pattern:()=>'<p>الگوهای کندلی وقتی معتبرترند که در انتهای یک روند و کنار یک سطح مهم بیایند. یک الگو در وسط بازار رنج معمولاً ارزش زیادی ندارد، برای همین به‌تنهایی کافی نیست و با روند و RSI ترکیب می‌شود.</p>',
+ lev:()=>'<p>مثال: با اهرم ۱۰ برابر، حرکت ۱۰٪ علیه شما یعنی از دست‌رفتن کل مبلغ وثیقه. با همین حد ضرر و مقدار محاسبه‌شده، اهرم فقط ابزار تأمین وثیقه است و ریسک را بالا نمی‌برد، ولی بدون حد ضرر اهرم خطرناک‌ترین حالت است.</p>'
+};
+/* voice */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition,PH=$('#q').placeholder;
+let rec=null,wantMic=false,speaking=false;
+function uiMic(on){$('#mic').classList.toggle('rec',on);$('#mic').setAttribute('aria-pressed',on?'true':'false');$('#q').placeholder=on?'در حال گوش دادن… برای قطع، دکمه میکروفون را بزنید':PH}
+function makeRec(){
+  rec=new SR();rec.lang='fa-IR';rec.continuous=true;rec.interimResults=true;
+  rec.onresult=e=>{if(speaking)return;let interim='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal){const v=r[0].transcript.trim();if(v){$('#q').value='';handle(v,true)}}else interim+=r[0].transcript}$('#q').value=interim};
+  rec.onerror=e=>{const m={'not-allowed':'اجازه میکروفون داده نشد. در نوار آدرس مرورگر اجازه میکروفون را فعال کنید.','service-not-allowed':'اجازه میکروفون داده نشد. در نوار آدرس مرورگر اجازه میکروفون را فعال کنید.','audio-capture':'میکروفونی پیدا نشد.','network':'تشخیص گفتار فارسی به اینترنت نیاز دارد.'}[e.error];if(m){wantMic=false;uiMic(false);bot(m)}};
+  rec.onend=()=>{if(wantMic){try{rec.start()}catch(_){setTimeout(()=>{if(wantMic)makeRec()},400)}}else uiMic(false)};
+  try{rec.start();uiMic(true)}catch(e){wantMic=false;uiMic(false)}
+}
+function startMic(){if(!SR){bot('این مرورگر تشخیص گفتار ندارد. از Chrome یا Edge استفاده کنید، یا تایپ کنید.');return}if(wantMic)return;wantMic=true;makeRec();bot('گوش می‌دهم. دستورتان را بگویید، مثلاً «ریسک نیم درصد». برای قطع، دوباره دکمه میکروفون را بزنید.')}
+function stopMic(){wantMic=false;try{rec&&rec.stop()}catch(e){}uiMic(false)}
+$('#mic').onclick=()=>{if(wantMic){stopMic();bot('میکروفون خاموش شد.')}else startMic()};
+if(!SR)$('#mic').hidden=true;
+function uiSpk(){$('#spk').classList.toggle('on',!!S.voiceOut);$('#spk').setAttribute('aria-pressed',S.voiceOut?'true':'false')}
+function speak(html){
+  if(!S.voiceOut||!window.speechSynthesis)return;
+  const txt=String(html).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim().slice(0,240);if(!txt)return;
+  const u=new SpeechSynthesisUtterance(txt);u.lang='fa-IR';const v=speechSynthesis.getVoices().find(x=>/^fa/i.test(x.lang));if(v)u.voice=v;
+  u.onstart=()=>{speaking=true};u.onend=u.onerror=()=>{setTimeout(()=>{speaking=false},500)};
+  speechSynthesis.cancel();speechSynthesis.speak(u)}
+function setVoiceOut(on){
+  if(on&&!(window.speechSynthesis&&speechSynthesis.getVoices().some(v=>/^fa/i.test(v.lang)))){S.voiceOut=false;saveS();uiSpk();bot('صدای فارسی روی این سیستم پیدا نشد، برای همین پاسخ صوتی را روشن نکردم. در ویندوز می‌توانید از تنظیمات زبان، بسته گفتار فارسی را اضافه کنید. گوش‌دادن با میکروفون همچنان کار می‌کند.');return}
+  S.voiceOut=on;saveS();uiSpk();bot(on?'پاسخ صوتی روشن شد.':'پاسخ صوتی خاموش شد.')}
+$('#spk').onclick=()=>setVoiceOut(!S.voiceOut);
+if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices()}
+uiSpk();
+
+/* intent engine: returns undefined (no match), null (handled silently) or [reply, chips] */
+const LIM={soft:3,hard:10,abs:25};let pendingOK=null;
+function gate(p,apply,label,okMsg){
+  if(p>LIM.abs)return['بیشتر از '+LIM.abs+'٪ موجودی در هر معامله را محاسبه نمی‌کنم؛ این دیگر مدیریت ریسک نیست. عدد کمتری بگویید.'];
+  const n=Math.ceil(Math.log(.5)/Math.log(1-p/100));
+  if(p>LIM.hard){pendingOK={apply,okMsg};return['<p>'+label+' برابر '+p.toFixed(1)+'٪ موجودی است، خیلی بالاتر از حد پیش‌فرض ('+LIM.soft+'٪). با این اندازه فقط '+n+' ضرر پشت‌سرهم حساب را نصف می‌کند.</p><p>اگر مطمئنید بنویسید «تأیید می‌کنم»، وگرنه «لغو».</p>',['تأیید می‌کنم','لغو']]}
+  apply();
+  const w=p>LIM.soft?' چون خودتان گفتید قبول کردم، ولی این از حد پیش‌فرض ('+LIM.soft+'٪) بالاتر است: '+n+' ضرر پشت‌سرهم حساب را نصف می‌کند. اگر نخواستید، «حالت متعادل» را بگویید.':'';
+  return done(okMsg+w);
+}
+function smart(t){
+  const N=[...t.matchAll(/\d+(?:\.\d+)?/g)].map(m=>+m[0]),pct=/(درصد|%|٪)/.test(t),cur=/(دلار|تومان|یورو|تتر|usdt|واحد|\$)/.test(t),sl=/حد ضرر/.test(t);
+  if(/(نخون|(صوتی|صدا).*(خاموش|قطع)|(خاموش|قطع).*(صوتی|صدا))/.test(t)){setVoiceOut(false);return null}
+  if(/(بلند بخون|پاسخ صوتی|جواب صوتی|بخون برام)/.test(t)){setVoiceOut(true);return null}
+  if(/(گوش نده|میکروفون.*(خاموش|قطع)|خاموش.*میکروفون)/.test(t)){stopMic();return['میکروفون خاموش شد.']}
+  if(/(میکروفون.*(روشن|فعال)|^گوش بده|^گوش کن)/.test(t)){startMic();return null}
+  if(/(قطع).*(اشتراک)|اشتراک.*قطع/.test(t)&&video){$('#stop').click();return null}
+  if(/(تحلیل|رفرش|بروزرسانی|آپدیت)/.test(t)&&/ثانیه/.test(t)&&N.length){S.every=clamp(Math.round(N[0]),3,300);restartAuto();return done('تحلیل خودکار حالا هر '+S.every+' ثانیه انجام می‌شود (حداقل ۳ ثانیه).')}
+  if(/(اشتراک|شیر).*(شروع|بزن)/.test(t)){return['مرورگر اجازه نمی‌دهد اشتراک صفحه با صدا شروع شود؛ فقط یک بار دکمه «اشتراک صفحه» را خودتان بزنید. بعد از آن بقیه کارها را می‌توانید با صدا انجام دهید.']}
+  if(/(خودکار|پیش ?فرض|اتوماتیک).*(ضرر|تنظیمات)|(ضرر|تنظیمات).*(خودکار|پیش ?فرض|اتوماتیک)|ریست تنظیمات/.test(t)){
+    if(sl&&!/تنظیمات/.test(t)){S.slPct=null;S.atrMul=1.5;return done('فاصله حد ضرر به حالت خودکار برگشت (۱٫۵ برابر نوسان کندل‌ها).')}
+    S.slPct=null;S.maxLoss=null;S.atrMul=1.5;S.rr=2;S.risk=1;return done('تنظیمات ضرر به حالت پیش‌فرض برگشت: ریسک ۱٪، حد ضرر خودکار، سود ۲ برابر ضرر.')}
+  if(/(بدون|بی)\s*حد ضرر|حد ضرر.*(نذار|نمی ?خوام|نمی ?خواهم|حذف|بردار|نباشه|نباشد)|(نذار|حذف).*حد ضرر/.test(t))
+    return['حد ضرر را حذف نمی‌کنم، چون بدون آن یک اشتباه می‌تواند بخش بزرگی از حساب را ببرد. ولی می‌توانید آن را دورتر یا نزدیک‌تر کنید یا فاصله‌اش را عدد بدهید، مثلاً «حد ضرر ۲ درصد». برای برگشت به حالت خودکار بگویید «حد ضرر خودکار».',['حد ضرر خودکار','حد ضرر دورتر','حد ضرر نزدیک‌تر']];
+  if(/(حالت امن|امن ?تر|ایمن ?تر|محافظه ?کار|کم ?ریسک)/.test(t)){Object.assign(S,{risk:.5,atrMul:2,rr:2.5,slPct:null,maxLoss:null});return done('حالت امن فعال شد: ریسک ۰٫۵٪، حد ضرر دورتر از نوسان معمول (۲ برابر ATR) و سود هدف ۲٫۵ برابر ضرر.')}
+  if(/(جسور|تهاجمی|پر ?ریسک)/.test(t)){Object.assign(S,{risk:2,atrMul:1.2,rr:2,slPct:null,maxLoss:null});return done('حالت جسورانه: ریسک ۲٪ و حد ضرر نزدیک‌تر. حواستان باشد احتمال خورده‌شدن حد ضرر بیشتر است و برای تازه‌کار توصیه نمی‌شود.')}
+  if(/(حالت متعادل|متعادل|حالت معمولی)/.test(t)){Object.assign(S,{risk:1,atrMul:1.5,rr:2,slPct:null,maxLoss:null});return done('حالت متعادل: ریسک ۱٪، حد ضرر ۱٫۵ برابر نوسان و سود هدف ۲ برابر ضرر.')}
+  if(/(تنظیمات|وضعیت).*(چیه|چیست|چقدره|چطوره|من)|تنظیمات من|^تنظیمات$/.test(t))return['<p>تنظیمات فعلی:</p>'+sumS(),['حالت امن','ضرر کمتر','تحلیل مجدد']];
+  if(/(دستور|چه کار.*(میتونم|میشه)|چی.*(بگم|بگویم)|چه دستورهایی)/.test(t))return[CMDS];
+  if(/(توضیح (بیشتر|بده)|بیشتر توضیح|مفصل|مثال بزن|یه مثال|یک مثال|ادامه بده|بیشتر بگو)/.test(t))return ctx.topic&&EXT[ctx.topic]?[EXT[ctx.topic](),['تنظیمات من']]:['درباره کدام موضوع؟ مثلاً بپرسید «حد ضرر چیست؟» بعد بگویید «مثال بزن».'];
+  if(sl&&/(دور ?تر|باز ?تر|گشاد ?تر|بیشتر|بزرگ ?تر)/.test(t)&&!N.length){S.atrMul=Math.min(4,+(S.atrMul+.5).toFixed(1));if(S.slPct)S.slPct=+(S.slPct*1.25).toFixed(2);return done('حد ضرر دورتر شد ('+(S.slPct?S.slPct+'٪ قیمت':S.atrMul+' برابر نوسان')+'). مقدار معامله کمتر می‌شود تا ضرر ثابت بماند.')}
+  if(sl&&/(نزدیک ?تر|تنگ ?تر|کوچک ?تر|کمتر)/.test(t)&&!N.length){S.atrMul=Math.max(.8,+(S.atrMul-.5).toFixed(1));if(S.slPct)S.slPct=Math.max(.1,+(S.slPct*.8).toFixed(2));return done('حد ضرر نزدیک‌تر شد ('+(S.slPct?S.slPct+'٪ قیمت':S.atrMul+' برابر نوسان')+'). حواستان باشد با نوسان معمولی زودتر خورده می‌شود.')}
+  if(/(ضرر|ریسک)/.test(t)&&/(کمتر|کم کن|پایین ?تر|کاهش)/.test(t)&&!N.length&&!sl){if(S.maxLoss)S.maxLoss=+(S.maxLoss/2).toFixed(2);else S.risk=Math.max(.1,+(S.risk/2).toFixed(2));return done('ضرر هر معامله نصف شد: بیشترین ضرر حالا '+fmt(eff())+' ('+(eff()/S.bal*100).toFixed(2)+'٪ موجودی) است.')}
+  if(/(ضرر|ریسک)/.test(t)&&/(بیشتر|زیادتر|بالا ?تر|افزایش)/.test(t)&&!N.length&&!sl){const cp=eff()/S.bal*100;if(cp>=2)return['ضرر هر معامله الان '+cp.toFixed(2)+'٪ است و با «بیشتر» از ۲٪ بالاتر نمی‌برم. اگر می‌خواهید بیشتر شود، عدد دقیق بگویید، مثلاً «ریسک ۴ درصد».'];if(S.maxLoss)S.maxLoss=Math.min(+(S.maxLoss*1.5).toFixed(2),+(S.bal*.02).toFixed(2));else S.risk=Math.min(2,+(S.risk*1.5).toFixed(2));return done('ضرر هر معامله بیشتر شد: بیشترین ضرر '+fmt(eff())+' ('+(eff()/S.bal*100).toFixed(2)+'٪ موجودی). از این بالاتر را برای مبتدی توصیه نمی‌کنم، ولی اگر عدد دقیق بگویید تا ۳٪ قبول می‌کنم.')}
+  if(/(چقدر|چند).*ضرر.*(میکنم|می کنم|میشه|می شه|هست|بخورم)|(بیشترین|حداکثر) ضرر.*(چقدر|چنده)/.test(t)){const m=LV&&LV.maxLoss?LV.maxLoss:eff();return['اگر حد ضرر بخورد حدود '+fmt(m)+' ضرر می‌کنید که '+(m/S.bal*100).toFixed(2)+'٪ موجودی است.',['ضرر کمتر','تنظیمات من']]}
+  if(/(سر به سر|break ?even|چند درصد.*(برنده|درست)|وین ?ریت|winrate)/.test(t))return['با سود هدف '+S.rr+' برابر ضرر، اگر حدود '+Math.round(100/(1+S.rr))+'٪ معامله‌ها برنده باشند سر به سر می‌شوید. بیشتر از آن، سود است.'];
+  if(/(اگه|اگر|فرض کن).*(سود|برنده).*(چقدر|چنده|میشه|می شه)|چقدر.*سود.*(میکنم|می کنم|میشه)/.test(t)){const g=LV&&LV.gain?LV.gain:eff()*S.rr;return['اگر حد سود بخورد حدود '+fmt(g)+' سود می‌کنید ('+S.rr+' برابر ضرر).']}
+  if(N.length){
+    let m;
+    if((m=t.match(/(\d+(?:\.\d+)?)\s*بار.*(ضرر|باخت)|(ضرر|باخت).*?(\d+(?:\.\d+)?)\s*بار/))){const n=+(m[1]||m[4]),r=eff()/S.bal,left=S.bal*Math.pow(1-r,n);return['اگر '+n+' معامله پشت‌سرهم حد ضرر بخورد (هر کدام '+fmt(eff())+'): موجودی از '+fmt(S.bal)+' به حدود '+fmt(left)+' می‌رسد، یعنی '+((1-left/S.bal)*100).toFixed(1)+'٪ افت. برای همین ضرر روزانه را سقف‌دار کنید.']}
+    if(/(اگه|اگر|فرض کن)/.test(t)&&/ضرر/.test(t)&&/(چند درصد|چنده|چند میشه|چند می شه)/.test(t))return[fmt(N[0])+' ضرر برابر '+(N[0]/S.bal*100).toFixed(2)+'٪ موجودی '+fmt(S.bal)+' است.'+(N[0]/S.bal>.03?' این از سقف امن ۳٪ بیشتر است.':'')];
+    if(sl&&pct){const v=clamp(N[0],.1,20);S.slPct=v;return done('فاصله حد ضرر روی '+v+'٪ قیمت ورود تنظیم شد.'+(v<.5?' این فاصله خیلی کم است و ممکن است با نوسان معمولی خورده شود.':'')+(cal.length<2?' این مقدار بعد از کالیبره قیمت اعمال می‌شود.':''))}
+    if(/(سود|ریوارد|نسبت|tp)/.test(t)&&/(برابر|ریوارد|نسبت|به 1)/.test(t)){const m2=t.match(/\b1\s*به\s*(\d+(?:\.\d+)?)/)||t.match(/(\d+(?:\.\d+)?)\s*به\s*1\b/)||t.match(/(\d+(?:\.\d+)?)\s*برابر/)||t.match(/(?:ریوارد|نسبت)\D*(\d+(?:\.\d+)?)/);
+      if(m2){S.rr=clamp(+m2[1],1,10);return done('سود هدف روی '+S.rr+' برابر ضرر تنظیم شد. با این نسبت حدود '+Math.round(100/(1+S.rr))+'٪ معامله‌ها باید برنده باشند تا سر به سر شوید.'+(S.rr<1.5?' نسبت کمتر از ۱٫۵ توصیه نمی‌شود.':''))}}
+    if(/(ضرر|ریسک)/.test(t)&&(cur||(!pct&&N[0]>3))){const v=N[0];return gate(v/S.bal*100,()=>{S.maxLoss=v},'بیشترین ضرر '+fmt(v),'بیشترین ضرر هر معامله روی '+fmt(v)+' ('+(v/S.bal*100).toFixed(2)+'٪ موجودی) تنظیم شد. مقدار معامله را طوری حساب می‌کنم که اگر حد ضرر بخورد از این بیشتر ضرر نکنید.')}
+    if(/(ضرر|ریسک)/.test(t)&&!sl){const v=Math.max(.1,N[0]);return gate(v,()=>{S.risk=v;S.maxLoss=null},'ریسک '+v+'٪','ریسک هر معامله روی '+v+'٪ موجودی تنظیم شد (بیشترین ضرر '+fmt(S.bal*v/100)+').')}
+  }
+  return undefined;
+}
+const KEYS=['ضرر','ریسک','سود','موجودی','کالیبره','تحلیل','اهرم','اسپات','فیوچرز','روند','چکش','پوشا','ستاره','دوجی','راهنما','مقدار','تنظیمات','محافظه','جسورانه','متعادل','میکروفون','صوتی','ریوارد','درصد','اشتراک','اسکرین'];
+function lev(a,b){const d=[];for(let i=0;i<=a.length;i++){d[i]=[i];for(let j=1;j<=b.length;j++)d[i][j]=i?0:j}for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length]}
+function fuzzy(t){return t.split(' ').map(w=>{if(w.length<4||/\d/.test(w)||KEYS.includes(w))return w;let best=null,bd=9;for(const k of KEYS){const dd=lev(w,k),lim=k.length>=7?2:1;if(dd<=lim&&dd<bd){bd=dd;best=k}}return best||w}).join(' ')}
+function ruleHit(t){for(const [re,fn] of RULES){const m=t.match(re);if(m)return{r:fn(m)}}return null}
+function handle(raw,fromVoice){
+  say((fromVoice?'<small style="display:inline;margin:0 0 0 6px">صوتی</small>':'')+esc(raw),'me');
+  const t=faNums(norm(raw).replace(/صد ?در ?صد|صدرصد/g,'100 درصد'));
+  if(awaitPrice){const v=num(t);if(v==null){bot('فقط یک عدد بنویسید، مثلاً 2450.5');return}
+    cal.push({yr:pend,p:v});if(cal.length>2)cal.shift();pend=null;awaitPrice=false;
+    if(cal.length<2){bot('ثبت شد. حالا یک نقطه دیگر (دور از اولی) را روی عکس کلیک کنید.')}
+    else{mode='';$('#mCal').classList.remove('on');bot('کالیبره شد. دوباره تحلیل می‌کنم…');lastSig='';setTimeout(()=>analyze(true),300)}return}
+  if(pendingOK){const P=pendingOK;pendingOK=null;
+    if(/(لغو|نخیر|ولش کن|^نه$)/.test(t)){bot('لغو شد؛ تنظیم قبلی باقی ماند.');return}
+    if(/(تایید|تأیید|بله|آره|موافقم|مطمئنم)/.test(t)){P.apply();const r=done(P.okMsg+' (با تأیید خودتان؛ این ریسک بالاست.)');bot(r[0],r[1]);return}}
+  for(const [k,re] of TOP)if(re.test(t)){ctx.topic=k;break}
+  const run=x=>{const r=smart(x);return r!==undefined?{r}:ruleHit(x)};
+  let h=run(t);
+  if(!h){const f=fuzzy(t);if(f!==t)h=run(f)}
+  if(h){if(h.r)bot(h.r[0].startsWith('<')?h.r[0]:esc(h.r[0]),h.r[1]);return}
+  bot('این را دقیق نفهمیدم. می‌توانید دستور بدهید (مثلاً «ریسک نیم درصد» یا «حالت امن»)، درباره حد ضرر، RSI، اهرم و الگوهای کندلی بپرسید، یا نمودارتان را نشان بدهید.',LV?['چرا؟','تنظیمات من','دستورها']:['راهنما','دستورها','حد ضرر چیست؟'])
+}
+
+function welcome(){
+  bot('سلام! من دستیار <b>A Trade</b> هستم. اسکرین‌شات نمودار را همین‌جا Paste کنید یا بکشید و رها کنید؛ خودم کندل‌ها را می‌خوانم و می‌گویم چه کار کنید. با دکمه میکروفون هم می‌توانید دستور بدهید، مثلاً «ریسک نیم درصد» یا «بیشترین ضرر بیست دلار».',['راهنما','ریسک چیست؟','RSI یعنی چی؟']);
+  if(!(navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia)){$('#share').hidden=true;bot('این دستگاه اشتراک صفحه ندارد؛ اسکرین‌شات بدهید.')}
+}
+if(matchMedia('(pointer:coarse)').matches)$('#ph').innerHTML='اسکرین‌شات نمودار را با دکمه «انتخاب اسکرین‌شات» بدهید.';
+welcome();
+</script>
+</body>
+</html>

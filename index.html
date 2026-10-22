@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>A Trade Pro · تحلیل هوشمند همه بازارها</title><meta name="theme-color" content="#0a0f1d">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+:root{--bg:#0a0f1d;--pn:rgba(18,25,45,.78);--ln:#232e4d;--tx:#e9eefb;--mu:#8a97b8;--up:#22d3a6;--dn:#ff4d6a;--au:#f6b93b;--ac:#8ea2ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg) radial-gradient(700px 480px at 90% -10%,rgba(91,108,255,.22),transparent 60%) fixed;color:var(--tx);font-family:Vazirmatn,Tahoma,sans-serif;font-size:14px;line-height:1.7}
+.wrap{max-width:1240px;margin:auto;padding:12px}
+header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+h1{margin:0;font-size:22px;font-weight:800;background:linear-gradient(90deg,#8ea2ff,#22d3a6);-webkit-background-clip:text;background-clip:text;color:transparent;direction:ltr}
+.tag{font-size:11.5px;color:var(--mu);border:1px solid var(--ln);border-radius:99px;padding:1px 10px}.sp{flex:1}
+a{color:var(--ac)}
+.card{background:var(--pn);border:1px solid rgba(120,140,220,.18);border-radius:18px;padding:14px;backdrop-filter:blur(14px);box-shadow:0 12px 30px -16px #000}
+.card h3{margin:0 0 8px;font-size:14px;color:var(--au)}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:10px}
+button,select,input{font:inherit;color:var(--tx);background:rgba(127,140,180,.10);border:1px solid var(--ln);border-radius:12px;padding:6px 13px}
+button{cursor:pointer;white-space:nowrap;transition:.15s}button:hover{border-color:var(--au)}
+button.on{color:#1d1400;background:linear-gradient(135deg,#ffd36e,#e9a520);border-color:transparent;font-weight:700}
+.ctl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.ctl input{width:170px;direction:ltr}
+.grid{display:grid;grid-template-columns:1.35fr 1fr;gap:12px}@media(max-width:900px){.grid{grid-template-columns:1fr}}
+canvas{width:100%;height:360px;display:block;border-radius:12px;background:rgba(0,0,0,.25)}@media(max-width:600px){canvas{height:260px}}
+.sig{border-radius:14px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;border:2px solid var(--ln)}
+.sig b{font-size:22px}.BUY{border-color:var(--up);color:var(--up);background:linear-gradient(135deg,rgba(34,211,166,.18),transparent)}.SELL{border-color:var(--dn);color:var(--dn);background:linear-gradient(135deg,rgba(255,77,106,.18),transparent)}.WAIT{color:var(--mu)}
+.gauge{height:8px;border-radius:99px;background:linear-gradient(90deg,var(--dn),#55607e 50%,var(--up));position:relative;margin:10px 0 2px;direction:ltr}.gauge i{position:absolute;top:-4px;width:4px;height:16px;background:#fff;border-radius:2px;box-shadow:0 0 6px #fff}
+.lv{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0;direction:ltr;text-align:center}@media(max-width:600px){.lv{grid-template-columns:repeat(2,1fr)}}
+.lv div{border:1px solid var(--ln);border-radius:10px;padding:4px;background:rgba(255,255,255,.03)}.lv span{display:block;font-size:11px;color:var(--mu)}.lv b{font-size:14px}
+.up{color:var(--up)}.dn{color:var(--dn)}.mu{color:var(--mu)}
+.kp{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;direction:ltr}@media(max-width:600px){.kp{grid-template-columns:repeat(2,1fr)}}
+.kp div{border:1px solid var(--ln);border-radius:10px;padding:6px}.kp b{display:block;font-size:17px}.kp span{font-size:11px;color:var(--mu)}
+ul,ol{margin:4px 0;padding-inline-start:20px}li{margin:2px 0}
+.r-up::marker{color:var(--up)}.r-dn::marker{color:var(--dn)}
+.disc{font-size:12px;color:var(--mu);border-inline-start:3px solid var(--au);padding-inline-start:10px;margin-top:12px}
+.note{font-size:12.5px;color:var(--au)}.stack>*+*{margin-top:12px}
+#st{font-size:12px;color:var(--mu)}
+</style>
+</head>
+<body><div class="wrap">
+<header><h1>A Trade Pro</h1><span class="tag">هوش داخلی · بدون کلید API · داده زنده</span><span class="sp"></span><a href="screenshot.html">تحلیل از روی اسکرین‌شات ←</a></header>
+<nav class="tabs" id="tabs"></nav>
+<div class="ctl">
+ <select id="sym" aria-label="نماد"></select>
+ <input id="q" list="dl" placeholder="جستجوی نماد… (BTC)" aria-label="جستجو"><datalist id="dl"></datalist>
+ <select id="tf" aria-label="تایم‌فریم"><option value="15m">۱۵ دقیقه</option><option value="1h" selected>۱ ساعت</option><option value="4h">۴ ساعت</option><option value="1d">روزانه</option><option value="1w">هفتگی</option></select>
+ <select id="mk" aria-label="نوع حساب"><option value="spot">اسپات (فقط خرید)</option><option value="fut">فیوچرز / دوطرفه</option></select>
+ <button id="go" class="on">تحلیل کن</button>
+ <label class="mu"><input type="checkbox" id="auto" style="width:auto"> بروزرسانی خودکار هر کندل</label>
+ <span id="st"></span>
+</div>
+<div id="note" class="note"></div>
+<div class="grid">
+ <div class="stack">
+  <section class="card"><canvas id="cv"></canvas><div class="mu" style="font-size:11.5px;margin-top:4px">کندل‌ها · <span style="color:#f6b93b">EMA50</span> · <span style="color:#8ea2ff">EMA200</span> · نواحی حمایت/مقاومت · خطوط ورود/حد ضرر/اهداف</div></section>
+  <section class="card" id="sigBox"><div class="mu">یک بازار و نماد انتخاب کنید و «تحلیل کن» را بزنید.</div></section>
+  <section class="card" id="ml"></section>
+ </div>
+ <div class="stack">
+  <section class="card" id="plan"></section>
+  <section class="card" id="why"></section>
+ </div>
+</div>
+<p class="disc"><b>هشدار مهم:</b> همه پیش‌بینی‌ها احتمالاتی‌اند و هیچ تضمینی ندارند. دقت تاریخی مدل و نتایج بک‌تست را که صادقانه بالا نمایش داده می‌شود ببینید؛ عملکرد گذشته تضمین آینده نیست. این ابزار توصیه مالی نیست. قبل از پول واقعی روی حساب دمو تمرین کنید و همیشه حد ضرر بگذارید.</p>
+</div>
+<script src="engine.js"></script><script src="data.js"></script>
+<script>
+const $=s=>document.querySelector(s),fa=n=>n==null||isNaN(n)?'—':Number(n).toLocaleString('en-US',{maximumFractionDigits:n>=1000?2:n>=1?4:8}),pc=x=>(x*100).toFixed(1)+'٪',esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+let M=ATD.MARKETS[0],last=null,timer=null,data=null;
+const TFfa={'15m':'۱۵ دقیقه','1h':'۱ ساعت','4h':'۴ ساعت','1d':'روز','1w':'هفته'};
+function dur(min){return min<60?Math.round(min)+' دقیقه':min<1440?(min/60).toFixed(1)+' ساعت':min<10080*2?(min/1440).toFixed(1)+' روز':(min/10080).toFixed(1)+' هفته'}
+ATD.MARKETS.forEach(m=>{const b=document.createElement('button');b.textContent=m.fa;b.onclick=()=>pick(m);m.btn=b;$('#tabs').appendChild(b)});
+function pick(m){M=m;ATD.MARKETS.forEach(x=>x.btn.classList.toggle('on',x===m));$('#sym').innerHTML=m.list.map(s=>'<option>'+s+'</option>').join('');$('#note').textContent=m.note||'';
+ const shot=m.src==='screenshot';['#sym','#tf','#go','#q'].forEach(s=>$(s).disabled=shot);if(shot){$('#sigBox').innerHTML='<p>برای این بازار <a href="screenshot.html">حالت تحلیل اسکرین‌شات</a> را باز کنید: اسکرین‌شات نمودار را Paste کنید تا کندل‌ها خوانده و تحلیل شوند.</p>'}else run()}
+$('#q').oninput=async e=>{const v=e.target.value.trim();if(v.length<2||M.src!=='binance')return;try{const r=await ATD.binanceSearch(v);$('#dl').innerHTML=r.map(s=>'<option value="'+s+'">').join('')}catch(_){}};
+$('#q').onchange=e=>{const v=e.target.value.trim().toUpperCase();if(!v)return;if(![...$('#sym').options].some(o=>o.value===v))$('#sym').insertAdjacentHTML('afterbegin','<option>'+v+'</option>');$('#sym').value=v;run()};
+['#sym','#tf','#mk'].forEach(s=>$(s).onchange=run);$('#go').onclick=run;
+$('#auto').onchange=()=>{clearInterval(timer);if($('#auto').checked)timer=setInterval(run,Math.min(ATD.TF[$('#tf').value].m*6e4,15*6e4)/3)};
+async function run(){if(M.src==='screenshot')return;const sym=$('#sym').value,tf=$('#tf').value;$('#st').textContent='در حال دریافت داده و آموزش مدل…';
+ try{data=await ATD.load(M.src,sym,tf);await new Promise(r=>setTimeout(r,20));
+  if(data.C.length<300)throw new Error('تاریخچه کافی نیست ('+data.C.length+' کندل)');
+  const a=ATE.analyze(data.C,{htf:data.H,horizon:6,spot:$('#mk').value==='spot'});last=a;render(a,sym,tf);
+  $('#st').textContent='آخرین بروزرسانی: '+new Date().toLocaleTimeString('fa-IR')+' · '+data.C.length+' کندل'}
+ catch(e){$('#st').textContent='';$('#sigBox').innerHTML='<p class="dn">دریافت داده ناموفق بود: '+esc(e.message)+'. اتصال اینترنت یا نماد را بررسی کنید.</p>'}}
+function render(a,sym,tf){const spot=$('#mk').value==='spot',tfm=ATD.TF[tf].m;let side=a.side;const spotSell=spot&&side==='SELL';
+ const T={BUY:'خرید (Long)',SELL:spotSell?'فروش / خروج از دارایی — خرید جدید نکنید':'فروش (Short)',WAIT:'صبر — ورود نکنید'}[side];
+ const weak=a.bt.n>=10&&a.bt.pf<1;
+ let h='<div class="sig '+side+'"><b>'+T+'</b><span>احتمال صعود در '+a.horizon+' کندل آینده: '+pc(a.pUp)+' · اطمینان '+a.conf+'٪</span></div>';
+ h+='<div class="gauge"><i style="left:'+Math.max(0,Math.min(98,50+a.score*50))+'%"></i></div><div class="mu" style="font-size:11px;display:flex;justify-content:space-between;direction:ltr"><span>فروش قوی</span><span>خنثی</span><span>خرید قوی</span></div>';
+ h+='<div class="lv"><div><span>قیمت فعلی</span><b>'+fa(a.price)+'</b></div><div><span>ATR (نوسان)</span><b>'+fa(a.atr)+'</b></div><div><span>RSI · ADX</span><b>'+a.ind.rsi.toFixed(0)+' · '+(a.ind.adx||0).toFixed(0)+'</b></div>';
+ if(a.lv)h+='<div><span>ناحیه ورود</span><b>'+fa(a.lv.ez[0])+' – '+fa(a.lv.ez[1])+'</b></div><div><span>حد ضرر (SL)</span><b class="dn">'+fa(a.lv.sl)+'</b></div><div><span>R:R تا TP2</span><b>1:'+a.lv.rr[1].toFixed(2)+'</b></div>'+a.lv.tps.map((t,i)=>'<div><span>TP'+(i+1)+' (R '+a.lv.rr[i].toFixed(1)+')</span><b class="up">'+fa(t)+'</b></div>').join('');
+ h+='</div>';if(weak)h+='<p class="note">⚠ بک‌تست این نماد/تایم‌فریم سودده نبوده (Profit Factor زیر ۱). سیگنال را با احتیاط بیشتر و حجم کمتر استفاده کنید یا تایم‌فریم دیگری را امتحان کنید.</p>';
+ $('#sigBox').innerHTML=h;
+ // ML + backtest
+ const w=a.wf,b=a.bt;$('#ml').innerHTML='<h3>دقت واقعی مدل و بک‌تست (روی همین داده)</h3><div class="kp">'+
+  '<div><b>'+(w?pc(w.acc):'—')+'</b><span>دقت Walk-forward مدل یادگیری</span></div><div><b>'+(w?pc(w.base):'—')+'</b><span>مبنای ساده (همیشه جهت غالب)</span></div>'+
+  '<div><b class="'+(b.win>=.4?'up':'dn')+'">'+pc(b.win)+'</b><span>نرخ برد سیگنال‌ها ('+b.n+' معامله)</span></div><div><b class="'+(b.pf>=1?'up':'dn')+'">'+(isFinite(b.pf)?b.pf.toFixed(2):'∞')+'</b><span>Profit Factor · میانگین '+b.expR.toFixed(2)+'R</span></div></div>'+
+  '<p class="mu" style="font-size:12px">مدل: رگرسیون لجستیک با '+(19)+' ویژگی، آموزش در مرورگر روی '+data.C.length+' کندل، پیش‌بینی جهت '+a.horizon+' کندل بعد؛ اعتبارسنجی پیش‌رونده ('+(w?w.n:0)+' نمونه خارج از آموزش). سهم مدل در اطمینان نهایی به اندازه برتری اندازه‌گیری‌شده‌اش بر ۵۰٪ است. بک‌تست: ورود در باز شدن کندل بعد از سیگنال، SL=۱٫۵ATR، TP=۲٫۵ATR، بدون کارمزد و لغزش. احتمال قانون‌ها '+pc(a.pRule)+' · مدل '+pc(a.pML)+'.</p>';
+ // plan
+ let p='<h3>زمان‌بندی و برنامه معامله · '+esc(sym)+' · '+TFfa[tf]+'</h3>';
+ if(a.lv){const c=x=>Math.max(1,Math.round(Math.abs(x-a.lv.ent)/a.atr*1.6));const dir=side==='BUY'?'بالا':'پایین';
+  p+='<ol><li><b>کی وارد شویم:</b> ظرف '+dur(tfm)+' تا '+dur(tfm*3)+' آینده، وقتی قیمت به ناحیه ورود ('+fa(a.lv.ez[0])+' تا '+fa(a.lv.ez[1])+') برگشت و یک کندل '+TFfa[tf]+' در جهت '+dir+' بسته شد. اگر بدون پولبک مستقیم به TP1 رسید، دنبالش نکنید.</li>'+
+  '<li><b>حجم:</b> طوری که فاصله ورود تا حد ضرر ('+fa(a.lv.R)+') حداکثر ۱٪ موجودی را ببرد. ورود پله‌ای: ۵۰٪ در ناحیه، ۵۰٪ بعد از تأیید.</li>'+
+  '<li><b>حد ضرر</b> را همان لحظه روی '+fa(a.lv.sl)+' ثبت کنید (پشت ساختار/حمایت‌مقاومت + نیم ATR).</li>'+
+  '<li><b>کی بفروشیم (خروج):</b> TP1 '+fa(a.lv.tps[0])+' (تقریباً '+dur(c(a.lv.tps[0])*tfm)+')؛ ۴۰٪ را ببندید و حد ضرر را به نقطه ورود ببرید. TP2 '+fa(a.lv.tps[1])+' (~'+dur(c(a.lv.tps[1])*tfm)+')؛ ۳۰٪ دیگر. TP3 '+fa(a.lv.tps[2])+' (~'+dur(c(a.lv.tps[2])*tfm)+') با حد ضرر شناور.</li>'+
+  '<li><b>ابطال زمانی:</b> اگر تا '+dur(c(a.lv.tps[1])*tfm*1.5)+' به TP1 نرسید، معامله را دستی ببندید؛ یعنی انگیزه حرکت از بین رفته.</li></ol>'}
+ else p+='<p>الان شواهد کافی و هم‌جهت برای ورود نیست (احتمال صعود '+pc(a.pUp)+'، نزدیک به ۵۰٪). صبر کردن خودش یک موقعیت است.</p><ul><li><b>کی بخریم:</b> بسته‌شدن کندل '+TFfa[tf]+' بالای '+fa(a.zones.res[0]?a.zones.res[0].hi:a.price+a.atr)+' با حجم بالا، یا برگشت از حمایت '+fa(a.zones.sup[0]?a.zones.sup[0].mid:a.price-a.atr)+' با کندل برگشتی.</li><li><b>کی بفروشیم:</b> بسته‌شدن زیر '+fa(a.zones.sup[0]?a.zones.sup[0].lo:a.price-a.atr)+'.</li><li>هر '+dur(tfm*3)+' دوباره بررسی کنید یا بروزرسانی خودکار را روشن کنید.</li></ul>';
+ const s1=a.zones.res[0],s2=a.zones.sup[0];
+ p+='<h3>سناریوها</h3><ul><li class="r-up"><b>صعودی:</b> '+(s1?'شکست و تثبیت بالای مقاومت '+fa(s1.hi)+' مسیر را تا '+fa(a.zones.res[1]?a.zones.res[1].mid:a.fib.x1272)+' باز می‌کند.':'ادامه روند با حفظ کف‌های بالاتر.')+'</li><li class="r-dn"><b>نزولی:</b> '+(s2?'شکست حمایت '+fa(s2.lo)+' احتمالاً قیمت را به '+fa(a.zones.sup[1]?a.zones.sup[1].mid:s2.lo-a.atr*2)+' می‌برد.':'تشکیل کف پایین‌تر.')+'</li><li><b>ابطال:</b> '+(a.lv?'بسته‌شدن کندل '+(side==='BUY'?'زیر ':'بالای ')+fa(a.lv.sl):'—')+'</li></ul>';
+ p+='<p class="mu" style="font-size:12px">حمایت‌ها: '+a.zones.sup.map(z=>fa(z.mid)).join('، ')+' · مقاومت‌ها: '+a.zones.res.map(z=>fa(z.mid)).join('، ')+' · فیبوناچی ۰٫۶۱۸: '+fa(a.fib.r618)+' · اکستنشن ۱٫۲۷۲: '+fa(a.fib.x1272)+'</p>';
+ $('#plan').innerHTML=p;
+ $('#why').innerHTML='<h3>چرا؟ (توضیح کامل '+a.reasons.length+' عامل)</h3><ul>'+a.reasons.map(r=>'<li class="'+(r.v>0?'r-up':r.v<0?'r-dn':'')+'">'+esc(r.t)+' <span class="mu" style="font-size:11px">(وزن '+r.w.toFixed(1)+')</span></li>').join('')+'</ul>'+
+  (a.htf!=null?'<p class="mu">تایم‌فریم بالاتر: امتیاز '+a.htf.toFixed(2)+'</p>':'')+(a.ind.squeeze?'<p class="note">فشردگی نوسان فعال است؛ آماده حرکت شدید باشید.</p>':'');
+ draw(a)}
+function draw(a){const cv=$('#cv'),r=devicePixelRatio||1,W=cv.clientWidth,H=cv.clientHeight;cv.width=W*r;cv.height=H*r;const g=cv.getContext('2d');g.scale(r,r);g.direction='ltr';g.clearRect(0,0,W,H);
+ const n=Math.min(120,data.C.length),C=data.C.slice(-n),off=data.C.length-n,I=a.I;const lv=a.lv?[a.lv.sl,...a.lv.tps]:[];
+ let mx=Math.max(...C.map(x=>x.h),...lv),mn=Math.min(...C.map(x=>x.l),...lv);const pd=(mx-mn)*.05;mx+=pd;mn-=pd;const PR=70,Y=v=>6+(H-12)*(1-(v-mn)/(mx-mn)),bw=(W-PR)/n;
+ g.font='11px Vazirmatn,Tahoma';g.strokeStyle='rgba(255,255,255,.05)';for(let k=0;k<5;k++){const y=6+(H-12)*k/4;g.beginPath();g.moveTo(0,y);g.lineTo(W-PR,y);g.stroke();g.fillStyle='#8a97b8';g.fillText(fa(mx-(mx-mn)*k/4),W-PR+4,y+4)}
+ [...a.zones.sup.map(z=>[z,'rgba(34,211,166,.10)']),...a.zones.res.map(z=>[z,'rgba(255,77,106,.10)'])].forEach(([z,c])=>{g.fillStyle=c;const y1=Y(z.hi+a.atr*.15),y2=Y(z.lo-a.atr*.15);g.fillRect(0,y1,W-PR,Math.max(3,y2-y1))});
+ C.forEach((x,i)=>{const cx=i*bw+bw/2,col=x.c>=x.o?'#22d3a6':'#ff4d6a';g.strokeStyle=g.fillStyle=col;g.beginPath();g.moveTo(cx,Y(x.h));g.lineTo(cx,Y(x.l));g.stroke();g.fillRect(cx-bw*.35,Y(Math.max(x.o,x.c)),bw*.7,Math.max(1,Math.abs(Y(x.o)-Y(x.c))))});
+ [[I.e50,'#f6b93b'],[I.e200,'#8ea2ff']].forEach(([e,c])=>{g.strokeStyle=c;g.lineWidth=1.4;g.beginPath();C.forEach((_,i)=>{const v=e[off+i],x=i*bw+bw/2;i?g.lineTo(x,Y(v)):g.moveTo(x,Y(v))});g.stroke()});g.lineWidth=1;
+ if(a.lv){g.fillStyle='rgba(255,255,255,.08)';g.fillRect(0,Y(a.lv.ez[1]),W-PR,Math.max(2,Y(a.lv.ez[0])-Y(a.lv.ez[1])));
+  [[a.lv.sl,'#ff4d6a','SL'],[a.lv.ent,'#e9eefb','ورود'],...a.lv.tps.map((t,i)=>[t,'#22d3a6','TP'+(i+1)])].forEach(([v,c,t])=>{g.strokeStyle=g.fillStyle=c;g.setLineDash([5,4]);g.beginPath();g.moveTo(0,Y(v));g.lineTo(W-PR,Y(v));g.stroke();g.setLineDash([]);g.fillText(t,4,Y(v)-3)})}
+ g.fillStyle='#fff';g.fillRect(W-PR,Y(a.price)-8,PR,16);g.fillStyle='#000';g.fillText(fa(a.price),W-PR+4,Y(a.price)+4)}
+addEventListener('resize',()=>last&&draw(last));
+pick(M);
+</script>
+</body></html>

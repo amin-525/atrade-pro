@@ -1,0 +1,4 @@
+const D=require('./data.js'),E=require('./engine.js');
+(async()=>{for(const [src,sym,tf] of [['binance','BTCUSDT','1h'],['binance','ETHUSDT','4h'],['binance','PAXGUSDT','1h'],['binance','SPYBUSDT','1h'],['kraken','EURUSD','1h'],['binance','SOLUSDT','1d']]){
+ try{const t=Date.now(),{C,H}=await D.load(src,sym,tf);const a=E.analyze(C,{htf:H,horizon:6});
+ console.log(sym,tf,'n='+C.length,'side='+a.side,'pUp='+a.pUp.toFixed(2),'conf='+a.conf,'| WF acc='+(a.wf?(a.wf.acc*100).toFixed(1)+'% base='+(a.wf.base*100).toFixed(1)+'% hiConf='+(a.wf.hiAcc!=null?(a.wf.hiAcc*100).toFixed(1)+'%('+a.wf.hiN+')':'-')+' N='+a.wf.n:'n/a'),'| BT trades='+a.bt.n+' win='+(a.bt.win*100).toFixed(1)+'% PF='+a.bt.pf.toFixed(2)+' expR='+a.bt.expR.toFixed(2),a.lv?'SL '+a.lv.sl.toFixed(4)+' TP '+a.lv.tps.map(x=>x.toFixed(4)):'', (Date.now()-t)+'ms')}catch(e){console.log(sym,'ERR',e.message)}}})();
